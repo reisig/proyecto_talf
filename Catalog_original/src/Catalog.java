@@ -9,14 +9,7 @@ public class Catalog {
 
 	public static void main(String[] args) {
 
-		String filename = "";
-		args = new String[1];
-		args[0] = "C:\\Users\\Luis\\workspace\\Catalog\\src\\test.ctl";
-		if (args.length < 1 || !(filename = args[0]).endsWith("ctl"))
-		{
-			System.err.println("Usage: java Catalog [your program file name].ctl");
-		}
-		
+		String filename = "test.ctl";		
 		try
 		{
 			FileInputStream file = new FileInputStream(filename);
