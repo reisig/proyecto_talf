@@ -89,16 +89,11 @@ public class CatalogParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-
-	    CatalogTable ctlTable = new CatalogTable(); // stores variables
-	    CatalogFiles ctlFiles = new CatalogFiles(); // essential file operations
-
 	public CatalogParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class FileContext extends ParserRuleContext {
-		public CatalogType a;
 		public TerminalNode EOF() { return getToken(CatalogParser.EOF, 0); }
 		public List<StmtContext> stmt() {
 			return getRuleContexts(StmtContext.class);
@@ -160,42 +155,124 @@ public class CatalogParser extends Parser {
 	}
 
 	public static class StmtContext extends ParserRuleContext {
-		public CatalogType r;
-		public CatalogType r; CatalogType a; CatalogType ; b;
-		public TerminalNode PRINT() { return getToken(CatalogParser.PRINT, 0); }
-		public List<StmtContext> stmt() {
-			return getRuleContexts(StmtContext.class);
+		public StmtContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
 		}
-		public StmtContext stmt(int i) {
-			return getRuleContext(StmtContext.class,i);
+		@Override public int getRuleIndex() { return RULE_stmt; }
+	 
+		public StmtContext() { }
+		public void copyFrom(StmtContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class PrintStmtContext extends StmtContext {
+		public TerminalNode PRINT() { return getToken(CatalogParser.PRINT, 0); }
+		public StmtContext stmt() {
+			return getRuleContext(StmtContext.class,0);
 		}
 		public TerminalNode STRING() { return getToken(CatalogParser.STRING, 0); }
 		public TerminalNode NUMBER() { return getToken(CatalogParser.NUMBER, 0); }
+		public PrintStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitPrintStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ForStmtContext extends StmtContext {
+		public ForeachContext foreach() {
+			return getRuleContext(ForeachContext.class,0);
+		}
+		public ForStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitForStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IfStmtContext extends StmtContext {
 		public TerminalNode IF() { return getToken(CatalogParser.IF, 0); }
 		public OrContext or() {
 			return getRuleContext(OrContext.class,0);
 		}
 		public TerminalNode LBRACE() { return getToken(CatalogParser.LBRACE, 0); }
 		public TerminalNode RBRACE() { return getToken(CatalogParser.RBRACE, 0); }
+		public List<StmtContext> stmt() {
+			return getRuleContexts(StmtContext.class);
+		}
+		public StmtContext stmt(int i) {
+			return getRuleContext(StmtContext.class,i);
+		}
 		public List<TerminalNode> SEMI() { return getTokens(CatalogParser.SEMI); }
 		public TerminalNode SEMI(int i) {
 			return getToken(CatalogParser.SEMI, i);
 		}
-		public TerminalNode COPY() { return getToken(CatalogParser.COPY, 0); }
-		public TerminalNode MOVE() { return getToken(CatalogParser.MOVE, 0); }
-		public TerminalNode DELETE() { return getToken(CatalogParser.DELETE, 0); }
-		public ForeachContext foreach() {
-			return getRuleContext(ForeachContext.class,0);
-		}
-		public TerminalNode VAR() { return getToken(CatalogParser.VAR, 0); }
-		public TerminalNode ASSIGN() { return getToken(CatalogParser.ASSIGN, 0); }
-		public StmtContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_stmt; }
+		public IfStmtContext(StmtContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitStmt(this);
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitIfStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AssignStmtContext extends StmtContext {
+		public TerminalNode VAR() { return getToken(CatalogParser.VAR, 0); }
+		public TerminalNode ASSIGN() { return getToken(CatalogParser.ASSIGN, 0); }
+		public StmtContext stmt() {
+			return getRuleContext(StmtContext.class,0);
+		}
+		public AssignStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitAssignStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class CopyStmtContext extends StmtContext {
+		public TerminalNode COPY() { return getToken(CatalogParser.COPY, 0); }
+		public StmtContext stmt() {
+			return getRuleContext(StmtContext.class,0);
+		}
+		public TerminalNode STRING() { return getToken(CatalogParser.STRING, 0); }
+		public CopyStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitCopyStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class OrStmtContext extends StmtContext {
+		public OrContext or() {
+			return getRuleContext(OrContext.class,0);
+		}
+		public OrStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitOrStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DeleteStmtContext extends StmtContext {
+		public TerminalNode DELETE() { return getToken(CatalogParser.DELETE, 0); }
+		public StmtContext stmt() {
+			return getRuleContext(StmtContext.class,0);
+		}
+		public DeleteStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitDeleteStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MoveStmtContext extends StmtContext {
+		public TerminalNode MOVE() { return getToken(CatalogParser.MOVE, 0); }
+		public StmtContext stmt() {
+			return getRuleContext(StmtContext.class,0);
+		}
+		public TerminalNode STRING() { return getToken(CatalogParser.STRING, 0); }
+		public MoveStmtContext(StmtContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CatalogVisitor ) return ((CatalogVisitor<? extends T>)visitor).visitMoveStmt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -208,6 +285,7 @@ public class CatalogParser extends Parser {
 			setState(72);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
+				_localctx = new PrintStmtContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(38);
@@ -236,6 +314,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new IfStmtContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(44);
@@ -265,6 +344,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new CopyStmtContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(57);
@@ -276,6 +356,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new MoveStmtContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(61);
@@ -287,6 +368,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new DeleteStmtContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(65);
@@ -296,6 +378,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 6:
+				_localctx = new ForStmtContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(67);
@@ -303,6 +386,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 7:
+				_localctx = new AssignStmtContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(68);
@@ -314,6 +398,7 @@ public class CatalogParser extends Parser {
 				}
 				break;
 			case 8:
+				_localctx = new OrStmtContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(71);

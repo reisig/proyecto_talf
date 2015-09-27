@@ -7,7 +7,9 @@
  * Visit http://www.pragmaticprogrammer.com/titles/tpantlr2 for more book information.
 ***/
 
+
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,6 +25,11 @@ public class Catalog {
         CatalogLexer lexer = new CatalogLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         CatalogParser parser = new CatalogParser(tokens);
-        parser.file();                
+        ParseTree tree = parser.file();  
+        Visitor visitor = new Visitor();
+        System.out.println(visitor.visit(tree));
+        
+        
+                
     }
 }

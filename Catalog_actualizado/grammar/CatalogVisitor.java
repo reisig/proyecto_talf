@@ -16,11 +16,61 @@ public interface CatalogVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFile(CatalogParser.FileContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CatalogParser#stmt}.
+	 * Visit a parse tree produced by the {@code printStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStmt(CatalogParser.StmtContext ctx);
+	T visitPrintStmt(CatalogParser.PrintStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ifStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStmt(CatalogParser.IfStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code copyStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCopyStmt(CatalogParser.CopyStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code moveStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoveStmt(CatalogParser.MoveStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code deleteStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeleteStmt(CatalogParser.DeleteStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code forStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStmt(CatalogParser.ForStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assignStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignStmt(CatalogParser.AssignStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code orStmt}
+	 * labeled alternative in {@link CatalogParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrStmt(CatalogParser.OrStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CatalogParser#or}.
 	 * @param ctx the parse tree

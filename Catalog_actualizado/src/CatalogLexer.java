@@ -80,10 +80,6 @@ public class CatalogLexer extends Lexer {
 	}
 
 
-	    CatalogTable ctlTable = new CatalogTable(); // stores variables
-	    CatalogFiles ctlFiles = new CatalogFiles(); // essential file operations
-
-
 	public CatalogLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);

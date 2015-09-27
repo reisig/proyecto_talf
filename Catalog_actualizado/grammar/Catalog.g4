@@ -8,22 +8,17 @@ grammar Catalog;
 
 tokens { STATEMENTS, REVERSE, FOR }
 
-@members {
-    CatalogTable ctlTable = new CatalogTable(); // stores variables
-    CatalogFiles ctlFiles = new CatalogFiles(); // essential file operations
-}
+file  : (stmt SEMI)* EOF;	
 
-file locals [CatalogType a] : (stmt SEMI)* EOF;	
-
-stmt returns [CatalogType r] locals [CatalogType r; CatalogType a; CatalogType b;]:
-	PRINT (stmt|STRING|NUMBER)
-	|	IF or LBRACE (stmt SEMI)* RBRACE   
-	|	COPY stmt STRING   		
-	| 	MOVE stmt STRING 		
-	| 	DELETE stmt 
-	|	foreach	
-	|	VAR ASSIGN stmt 
-	|	or 
+stmt :
+	PRINT (stmt|STRING|NUMBER)					#printStmt
+	|	IF or LBRACE (stmt SEMI)* RBRACE   		#ifStmt
+	|	COPY stmt STRING   						#copyStmt
+	| 	MOVE stmt STRING 						#moveStmt
+	| 	DELETE stmt 							#deleteStmt
+	|	foreach									#forStmt
+	|	VAR ASSIGN stmt 						#assignStmt
+	|	or 										#orStmt
         ;		
 	
 or: and (OR and)*; // ||
