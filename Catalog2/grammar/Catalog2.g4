@@ -1,8 +1,10 @@
 grammar Catalog2;
 
-prog : (statement SEMICOLON)*
+prog : 
+		(statement SEMICOLON)*
        | (assignment)*
-       |  control_flow* ;
+       | (control_flow)*
+	   ;
 
 statement:
             PRINT LPAREN expresion RPAREN
@@ -12,7 +14,8 @@ statement:
          ;
 
 assignment:
-              ID ASSIGN expresion SEMICOLON;  
+              ID ASSIGN expresion SEMICOLON
+			  ;  
                      
 control_flow   :
             IF LPAREN (expresion) RPAREN 
@@ -20,7 +23,7 @@ control_flow   :
             (ELSE LBRACE (statement)* RBRACE)*
             (ELSEIF LPAREN (expresion) RPAREN 
              LBRACE (statement)* RBRACE)* #ifCondition
-        |   FOR LPAREN expresion COLON expresion 
+        |   FOR LPAREN expresion (IN|INSIDE) expresion 
             (COLON 'sort' LPAREN ID COMMA ('1'|'-1') RPAREN)? RPAREN 
             LBRACE  (statement)* RBRACE   #forCycle
         ;
@@ -32,11 +35,12 @@ expresion :
             | expresion op=(PLUS|MINUS) expresion
             | expresion AND expresion
             | expresion OR expresion
-            | expresion op=(EQUALS|NOTEQ|GT|LT|GTE|LTE)expresion
+            | expresion op=(EQUALS|NOTEQ|GT|LT|GTE|LTE) expresion
             | NUMBER
             | tf = (TRUE|FALSE)
             | ID
             | STRING PERIOD ID
+			| STRING
             ;
 
 // arithmetic
@@ -78,14 +82,16 @@ IF      : 'if';
 COPY    : 'cp';
 MOVE    : 'mv';
 DELETE  : 'del';
-FOR     : 'for';
+FOR     : 'foreach';
 ELSE    : 'else';
 ELSEIF  : 'elseif';
+IN 		: 'in';
+INSIDE	: 'inside';
 
 LETTER  : [a-zA-Z];
 DIGIT   : [0-9];
 NUMBER  : (DIGIT)+ (PERIOD (DIGIT)+)?;
-ID : (LETTER)(LETTER|DIGIT)*;
+ID : ('$')(LETTER)(LETTER|DIGIT)*;
 
 STRING : '"' ( '"' '"' | ~('"'))* '"';
 WS : (' '|'\t'|'\n' | '\r') -> skip;

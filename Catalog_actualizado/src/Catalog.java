@@ -20,9 +20,9 @@ public class Catalog {
         InputStream is = System.in;
         if ( inputFile!=null ) is = new FileInputStream(inputFile);
         ANTLRInputStream input = new ANTLRInputStream(is);
-        Catalog2Lexer lexer = new Catalog2Lexer(input);
+        CatalogLexer lexer = new CatalogLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        Catalog2Parser parser = new Catalog2Parser(tokens);
-        parser.prog();                
+        CatalogParser parser = new CatalogParser(tokens);
+        parser.file();                
     }
 }
