@@ -1,0 +1,47 @@
+// $ANTLR 2.7.7 (20060930): "Catalog.g" -> "CatalogLexer.java"$
+
+public interface CatalogLexerTokenTypes {
+	int EOF = 1;
+	int NULL_TREE_LOOKAHEAD = 3;
+	int PLUS = 4;
+	int MINUS = 5;
+	int TIMES = 6;
+	int DIV = 7;
+	int ASSIGN = 8;
+	int SEMI = 9;
+	int LPAREN = 10;
+	int RPAREN = 11;
+	int LBRACE = 12;
+	int RBRACE = 13;
+	int PERIOD = 14;
+	int EQ = 15;
+	int NOTEQ = 16;
+	int GREAT = 17;
+	int LESS = 18;
+	int GREATEQ = 19;
+	int LESSEQ = 20;
+	int AND = 21;
+	int OR = 22;
+	int LETTER = 23;
+	int DIGIT = 24;
+	int ID = 25;
+	int VAR = 26;
+	int NUMBER = 27;
+	int STRING = 28;
+	int WS = 29;
+	int COMMENTS = 30;
+	int STATEMENTS = 31;
+	int REVERSE = 32;
+	int FOR = 33;
+	int LITERAL_print = 34;
+	int LITERAL_if = 35;
+	int LITERAL_cp = 36;
+	int LITERAL_mv = 37;
+	int LITERAL_del = 38;
+	int TRUE = 39;
+	int FALSE = 40;
+	int LITERAL_foreach = 41;
+	int LITERAL_in = 42;
+	int LITERAL_inside = 43;
+	int LITERAL_sortby = 44;
+}
