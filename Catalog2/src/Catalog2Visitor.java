@@ -16,17 +16,40 @@ public interface Catalog2Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProg(Catalog2Parser.ProgContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Catalog2Parser#statement}.
+	 * Visit a parse tree produced by the {@code printStatement}
+	 * labeled alternative in {@link Catalog2Parser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(Catalog2Parser.StatementContext ctx);
+	T visitPrintStatement(Catalog2Parser.PrintStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Catalog2Parser#assignment}.
+	 * Visit a parse tree produced by the {@code copyStatement}
+	 * labeled alternative in {@link Catalog2Parser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignment(Catalog2Parser.AssignmentContext ctx);
+	T visitCopyStatement(Catalog2Parser.CopyStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code moveStatement}
+	 * labeled alternative in {@link Catalog2Parser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoveStatement(Catalog2Parser.MoveStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code deleteStatement}
+	 * labeled alternative in {@link Catalog2Parser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeleteStatement(Catalog2Parser.DeleteStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assign}
+	 * labeled alternative in {@link Catalog2Parser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssign(Catalog2Parser.AssignContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ifCondition}
 	 * labeled alternative in {@link Catalog2Parser#control_flow}.
@@ -42,9 +65,94 @@ public interface Catalog2Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForCycle(Catalog2Parser.ForCycleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Catalog2Parser#expresion}.
+	 * Visit a parse tree produced by the {@code negation}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpresion(Catalog2Parser.ExpresionContext ctx);
+	T visitNegation(Catalog2Parser.NegationContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code plusMinus}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPlusMinus(Catalog2Parser.PlusMinusContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code comparison}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComparison(Catalog2Parser.ComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code multDivMod}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultDivMod(Catalog2Parser.MultDivModContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringDotId}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringDotId(Catalog2Parser.StringDotIdContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parenExpression}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenExpression(Catalog2Parser.ParenExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code andOperator}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndOperator(Catalog2Parser.AndOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code orOperator}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrOperator(Catalog2Parser.OrOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringExpression}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringExpression(Catalog2Parser.StringExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code insertNumber}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInsertNumber(Catalog2Parser.InsertNumberContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code trueFalse}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrueFalse(Catalog2Parser.TrueFalseContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code insertVariable}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInsertVariable(Catalog2Parser.InsertVariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code idDotWord}
+	 * labeled alternative in {@link Catalog2Parser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdDotWord(Catalog2Parser.IdDotWordContext ctx);
 }

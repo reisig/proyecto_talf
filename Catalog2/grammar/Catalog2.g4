@@ -1,46 +1,48 @@
 grammar Catalog2;
 
 prog : 
-		(statement SEMICOLON)*
-       | (assignment)*
-       | (control_flow)*
+		(	  statement
+       		| assignment
+       		| control_flow
+       	)*	
 	   ;
 
 statement:
-            PRINT LPAREN expresion RPAREN
-         |  COPY LPAREN expresion COMMA expresion RPAREN
-         |  MOVE LPAREN expresion COMMA expresion RPAREN
-         |  DELETE LPAREN expresion RPAREN 
+            PRINT LPAREN VAR=expression RPAREN SEMICOLON					#printStatement
+         |  COPY LPAREN expression COMMA expression RPAREN SEMICOLON		#copyStatement
+         |  MOVE LPAREN expression COMMA expression RPAREN SEMICOLON		#moveStatement
+         |  DELETE LPAREN expression RPAREN SEMICOLON						#deleteStatement
          ;
 
 assignment:
-              ID ASSIGN expresion SEMICOLON
+              ID ASSIGN expression SEMICOLON								#assign
 			  ;  
                      
 control_flow   :
-            IF LPAREN (expresion) RPAREN 
-            LBRACE (statement)* RBRACE
-            (ELSE LBRACE (statement)* RBRACE)*
-            (ELSEIF LPAREN (expresion) RPAREN 
-             LBRACE (statement)* RBRACE)* #ifCondition
-        |   FOR LPAREN expresion (IN|INSIDE) expresion 
+            IF LPAREN (expression) RPAREN 
+            LBRACE (statement|control_flow)* RBRACE
+            (ELSE LBRACE (statement|control_flow)* RBRACE)*
+            (ELSEIF LPAREN (expression) RPAREN 
+             LBRACE (statement|control_flow)* RBRACE)* #ifCondition
+        |   FOR LPAREN expression (IN|INSIDE) expression 
             (COLON 'sort' LPAREN ID COMMA ('1'|'-1') RPAREN)? RPAREN 
-            LBRACE  (statement)* RBRACE   #forCycle
+            LBRACE  (statement|control_flow)* RBRACE   #forCycle
         ;
 
-expresion :
-              LPAREN expresion RPAREN
-            | (EXCL|MINUS) expresion
-            | expresion op=(MULT|DIV|MOD) expresion
-            | expresion op=(PLUS|MINUS) expresion
-            | expresion AND expresion
-            | expresion OR expresion
-            | expresion op=(EQUALS|NOTEQ|GT|LT|GTE|LTE) expresion
-            | NUMBER
-            | tf = (TRUE|FALSE)
-            | ID
-            | STRING PERIOD ID
-			| STRING
+expression :
+              LPAREN expression RPAREN									#parenExpression
+            | (EXCL) expression											#negation
+            | expression VAR=(MULT|DIV|MOD) expression					#multDivMod
+            | expression VAR=(PLUS|MINUS) expression					#plusMinus
+            | expression AND expression									#andOperator
+            | expression OR expression									#orOperator
+            | expression VAR=(EQUALS|NOTEQ|GT|LT|GTE|LTE) expression 	#comparison
+            | VAR=NUMBER												#insertNumber
+            | VAR=(TRUE|FALSE)											#trueFalse
+            | ID														#insertVariable
+            | STRING PERIOD ID											#stringDotId
+			| ID PERIOD WORD											#idDotWord
+			| VAR=STRING												#stringExpression
             ;
 
 // arithmetic
@@ -91,6 +93,7 @@ INSIDE	: 'inside';
 LETTER  : [a-zA-Z];
 DIGIT   : [0-9];
 NUMBER  : (DIGIT)+ (PERIOD (DIGIT)+)?;
+WORD	: LETTER+;
 ID : ('$')(LETTER)(LETTER|DIGIT)*;
 
 STRING : '"' ( '"' '"' | ~('"'))* '"';

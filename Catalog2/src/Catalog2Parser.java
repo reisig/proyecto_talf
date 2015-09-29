@@ -21,12 +21,12 @@ public class Catalog2Parser extends Parser {
 		COLON=17, EQUALS=18, NOTEQ=19, GT=20, LT=21, GTE=22, LTE=23, AND=24, OR=25, 
 		TRUE=26, FALSE=27, EXCL=28, PRINT=29, IF=30, COPY=31, MOVE=32, DELETE=33, 
 		FOR=34, ELSE=35, ELSEIF=36, IN=37, INSIDE=38, LETTER=39, DIGIT=40, NUMBER=41, 
-		ID=42, STRING=43, WS=44, COMMENT=45;
+		WORD=42, ID=43, STRING=44, WS=45, COMMENT=46;
 	public static final int
 		RULE_prog = 0, RULE_statement = 1, RULE_assignment = 2, RULE_control_flow = 3, 
-		RULE_expresion = 4;
+		RULE_expression = 4;
 	public static final String[] ruleNames = {
-		"prog", "statement", "assignment", "control_flow", "expresion"
+		"prog", "statement", "assignment", "control_flow", "expression"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -41,7 +41,7 @@ public class Catalog2Parser extends Parser {
 		"SEMICOLON", "LPAREN", "RPAREN", "LBRACE", "RBRACE", "PERIOD", "COMMA", 
 		"COLON", "EQUALS", "NOTEQ", "GT", "LT", "GTE", "LTE", "AND", "OR", "TRUE", 
 		"FALSE", "EXCL", "PRINT", "IF", "COPY", "MOVE", "DELETE", "FOR", "ELSE", 
-		"ELSEIF", "IN", "INSIDE", "LETTER", "DIGIT", "NUMBER", "ID", "STRING", 
+		"ELSEIF", "IN", "INSIDE", "LETTER", "DIGIT", "NUMBER", "WORD", "ID", "STRING", 
 		"WS", "COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -100,10 +100,6 @@ public class Catalog2Parser extends Parser {
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
-		public List<TerminalNode> SEMICOLON() { return getTokens(Catalog2Parser.SEMICOLON); }
-		public TerminalNode SEMICOLON(int i) {
-			return getToken(Catalog2Parser.SEMICOLON, i);
-		}
 		public List<AssignmentContext> assignment() {
 			return getRuleContexts(AssignmentContext.class);
 		}
@@ -132,67 +128,45 @@ public class Catalog2Parser extends Parser {
 		enterRule(_localctx, 0, RULE_prog);
 		int _la;
 		try {
-			setState(30);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(15);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << IF) | (1L << COPY) | (1L << MOVE) | (1L << DELETE) | (1L << FOR) | (1L << ID))) != 0)) {
 				{
-				setState(15);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << COPY) | (1L << MOVE) | (1L << DELETE))) != 0)) {
-					{
+				setState(13);
+				switch (_input.LA(1)) {
+				case PRINT:
+				case COPY:
+				case MOVE:
+				case DELETE:
 					{
 					setState(10);
 					statement();
+					}
+					break;
+				case ID:
+					{
 					setState(11);
-					match(SEMICOLON);
-					}
-					}
-					setState(17);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(21);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==ID) {
-					{
-					{
-					setState(18);
 					assignment();
 					}
-					}
-					setState(23);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(27);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==IF || _la==FOR) {
+					break;
+				case IF:
+				case FOR:
 					{
-					{
-					setState(24);
+					setState(12);
 					control_flow();
 					}
-					}
-					setState(29);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
 				}
-				break;
+				setState(17);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -207,26 +181,82 @@ public class Catalog2Parser extends Parser {
 	}
 
 	public static class StatementContext extends ParserRuleContext {
-		public TerminalNode PRINT() { return getToken(Catalog2Parser.PRINT, 0); }
-		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
-		public List<ExpresionContext> expresion() {
-			return getRuleContexts(ExpresionContext.class);
-		}
-		public ExpresionContext expresion(int i) {
-			return getRuleContext(ExpresionContext.class,i);
-		}
-		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
-		public TerminalNode COPY() { return getToken(Catalog2Parser.COPY, 0); }
-		public TerminalNode COMMA() { return getToken(Catalog2Parser.COMMA, 0); }
-		public TerminalNode MOVE() { return getToken(Catalog2Parser.MOVE, 0); }
-		public TerminalNode DELETE() { return getToken(Catalog2Parser.DELETE, 0); }
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
+	 
+		public StatementContext() { }
+		public void copyFrom(StatementContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class PrintStatementContext extends StatementContext {
+		public ExpressionContext VAR;
+		public TerminalNode PRINT() { return getToken(Catalog2Parser.PRINT, 0); }
+		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(Catalog2Parser.SEMICOLON, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public PrintStatementContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitStatement(this);
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitPrintStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DeleteStatementContext extends StatementContext {
+		public TerminalNode DELETE() { return getToken(Catalog2Parser.DELETE, 0); }
+		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(Catalog2Parser.SEMICOLON, 0); }
+		public DeleteStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitDeleteStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MoveStatementContext extends StatementContext {
+		public TerminalNode MOVE() { return getToken(Catalog2Parser.MOVE, 0); }
+		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode COMMA() { return getToken(Catalog2Parser.COMMA, 0); }
+		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(Catalog2Parser.SEMICOLON, 0); }
+		public MoveStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitMoveStatement(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class CopyStatementContext extends StatementContext {
+		public TerminalNode COPY() { return getToken(Catalog2Parser.COPY, 0); }
+		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode COMMA() { return getToken(Catalog2Parser.COMMA, 0); }
+		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(Catalog2Parser.SEMICOLON, 0); }
+		public CopyStatementContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitCopyStatement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -235,66 +265,78 @@ public class Catalog2Parser extends Parser {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_statement);
 		try {
-			setState(56);
+			setState(46);
 			switch (_input.LA(1)) {
 			case PRINT:
+				_localctx = new PrintStatementContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(32);
+				setState(18);
 				match(PRINT);
-				setState(33);
+				setState(19);
 				match(LPAREN);
-				setState(34);
-				expresion(0);
-				setState(35);
+				setState(20);
+				((PrintStatementContext)_localctx).VAR = expression(0);
+				setState(21);
 				match(RPAREN);
+				setState(22);
+				match(SEMICOLON);
 				}
 				break;
 			case COPY:
+				_localctx = new CopyStatementContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(37);
+				setState(24);
 				match(COPY);
-				setState(38);
+				setState(25);
 				match(LPAREN);
-				setState(39);
-				expresion(0);
-				setState(40);
+				setState(26);
+				expression(0);
+				setState(27);
 				match(COMMA);
-				setState(41);
-				expresion(0);
-				setState(42);
+				setState(28);
+				expression(0);
+				setState(29);
 				match(RPAREN);
+				setState(30);
+				match(SEMICOLON);
 				}
 				break;
 			case MOVE:
+				_localctx = new MoveStatementContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(44);
+				setState(32);
 				match(MOVE);
-				setState(45);
+				setState(33);
 				match(LPAREN);
-				setState(46);
-				expresion(0);
-				setState(47);
+				setState(34);
+				expression(0);
+				setState(35);
 				match(COMMA);
-				setState(48);
-				expresion(0);
-				setState(49);
+				setState(36);
+				expression(0);
+				setState(37);
 				match(RPAREN);
+				setState(38);
+				match(SEMICOLON);
 				}
 				break;
 			case DELETE:
+				_localctx = new DeleteStatementContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(51);
+				setState(40);
 				match(DELETE);
-				setState(52);
+				setState(41);
 				match(LPAREN);
-				setState(53);
-				expresion(0);
-				setState(54);
+				setState(42);
+				expression(0);
+				setState(43);
 				match(RPAREN);
+				setState(44);
+				match(SEMICOLON);
 				}
 				break;
 			default:
@@ -313,19 +355,27 @@ public class Catalog2Parser extends Parser {
 	}
 
 	public static class AssignmentContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(Catalog2Parser.ID, 0); }
-		public TerminalNode ASSIGN() { return getToken(Catalog2Parser.ASSIGN, 0); }
-		public ExpresionContext expresion() {
-			return getRuleContext(ExpresionContext.class,0);
-		}
-		public TerminalNode SEMICOLON() { return getToken(Catalog2Parser.SEMICOLON, 0); }
 		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignment; }
+	 
+		public AssignmentContext() { }
+		public void copyFrom(AssignmentContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class AssignContext extends AssignmentContext {
+		public TerminalNode ID() { return getToken(Catalog2Parser.ID, 0); }
+		public TerminalNode ASSIGN() { return getToken(Catalog2Parser.ASSIGN, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode SEMICOLON() { return getToken(Catalog2Parser.SEMICOLON, 0); }
+		public AssignContext(AssignmentContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitAssignment(this);
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitAssign(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -334,15 +384,16 @@ public class Catalog2Parser extends Parser {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_assignment);
 		try {
+			_localctx = new AssignContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(58);
+			setState(48);
 			match(ID);
-			setState(59);
+			setState(49);
 			match(ASSIGN);
-			setState(60);
-			expresion(0);
-			setState(61);
+			setState(50);
+			expression(0);
+			setState(51);
 			match(SEMICOLON);
 			}
 		}
@@ -374,11 +425,11 @@ public class Catalog2Parser extends Parser {
 		public TerminalNode LPAREN(int i) {
 			return getToken(Catalog2Parser.LPAREN, i);
 		}
-		public List<ExpresionContext> expresion() {
-			return getRuleContexts(ExpresionContext.class);
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
 		}
-		public ExpresionContext expresion(int i) {
-			return getRuleContext(ExpresionContext.class,i);
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public List<TerminalNode> RPAREN() { return getTokens(Catalog2Parser.RPAREN); }
 		public TerminalNode RPAREN(int i) {
@@ -396,6 +447,12 @@ public class Catalog2Parser extends Parser {
 		}
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
+		}
+		public List<Control_flowContext> control_flow() {
+			return getRuleContexts(Control_flowContext.class);
+		}
+		public Control_flowContext control_flow(int i) {
+			return getRuleContext(Control_flowContext.class,i);
 		}
 		public ForCycleContext(Control_flowContext ctx) { copyFrom(ctx); }
 		@Override
@@ -422,17 +479,23 @@ public class Catalog2Parser extends Parser {
 		public TerminalNode RBRACE(int i) {
 			return getToken(Catalog2Parser.RBRACE, i);
 		}
-		public List<ExpresionContext> expresion() {
-			return getRuleContexts(ExpresionContext.class);
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
 		}
-		public ExpresionContext expresion(int i) {
-			return getRuleContext(ExpresionContext.class,i);
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
+		}
+		public List<Control_flowContext> control_flow() {
+			return getRuleContexts(Control_flowContext.class);
+		}
+		public Control_flowContext control_flow(int i) {
+			return getRuleContext(Control_flowContext.class,i);
 		}
 		public List<TerminalNode> ELSE() { return getTokens(Catalog2Parser.ELSE); }
 		public TerminalNode ELSE(int i) {
@@ -455,109 +518,160 @@ public class Catalog2Parser extends Parser {
 		enterRule(_localctx, 6, RULE_control_flow);
 		int _la;
 		try {
-			setState(131);
+			setState(125);
 			switch (_input.LA(1)) {
 			case IF:
 				_localctx = new IfConditionContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(63);
+				setState(53);
 				match(IF);
-				setState(64);
+				setState(54);
 				match(LPAREN);
 				{
-				setState(65);
-				expresion(0);
+				setState(55);
+				expression(0);
 				}
-				setState(66);
+				setState(56);
 				match(RPAREN);
-				setState(67);
+				setState(57);
 				match(LBRACE);
-				setState(71);
+				setState(62);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << COPY) | (1L << MOVE) | (1L << DELETE))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << IF) | (1L << COPY) | (1L << MOVE) | (1L << DELETE) | (1L << FOR))) != 0)) {
 					{
-					{
-					setState(68);
-					statement();
+					setState(60);
+					switch (_input.LA(1)) {
+					case PRINT:
+					case COPY:
+					case MOVE:
+					case DELETE:
+						{
+						setState(58);
+						statement();
+						}
+						break;
+					case IF:
+					case FOR:
+						{
+						setState(59);
+						control_flow();
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
 					}
 					}
-					setState(73);
+					setState(64);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(74);
+				setState(65);
 				match(RBRACE);
-				setState(86);
+				setState(78);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==ELSE) {
 					{
 					{
-					setState(75);
+					setState(66);
 					match(ELSE);
-					setState(76);
+					setState(67);
 					match(LBRACE);
-					setState(80);
+					setState(72);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << COPY) | (1L << MOVE) | (1L << DELETE))) != 0)) {
+					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << IF) | (1L << COPY) | (1L << MOVE) | (1L << DELETE) | (1L << FOR))) != 0)) {
 						{
-						{
-						setState(77);
-						statement();
+						setState(70);
+						switch (_input.LA(1)) {
+						case PRINT:
+						case COPY:
+						case MOVE:
+						case DELETE:
+							{
+							setState(68);
+							statement();
+							}
+							break;
+						case IF:
+						case FOR:
+							{
+							setState(69);
+							control_flow();
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
 						}
 						}
-						setState(82);
+						setState(74);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(83);
+					setState(75);
 					match(RBRACE);
 					}
 					}
-					setState(88);
+					setState(80);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(104);
+				setState(97);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==ELSEIF) {
 					{
 					{
-					setState(89);
+					setState(81);
 					match(ELSEIF);
-					setState(90);
+					setState(82);
 					match(LPAREN);
 					{
-					setState(91);
-					expresion(0);
+					setState(83);
+					expression(0);
 					}
-					setState(92);
+					setState(84);
 					match(RPAREN);
-					setState(93);
+					setState(85);
 					match(LBRACE);
-					setState(97);
+					setState(90);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << COPY) | (1L << MOVE) | (1L << DELETE))) != 0)) {
+					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << IF) | (1L << COPY) | (1L << MOVE) | (1L << DELETE) | (1L << FOR))) != 0)) {
 						{
-						{
-						setState(94);
-						statement();
+						setState(88);
+						switch (_input.LA(1)) {
+						case PRINT:
+						case COPY:
+						case MOVE:
+						case DELETE:
+							{
+							setState(86);
+							statement();
+							}
+							break;
+						case IF:
+						case FOR:
+							{
+							setState(87);
+							control_flow();
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
 						}
 						}
-						setState(99);
+						setState(92);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(100);
+					setState(93);
 					match(RBRACE);
 					}
 					}
-					setState(106);
+					setState(99);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
@@ -567,66 +681,83 @@ public class Catalog2Parser extends Parser {
 				_localctx = new ForCycleContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(107);
+				setState(100);
 				match(FOR);
-				setState(108);
+				setState(101);
 				match(LPAREN);
-				setState(109);
-				expresion(0);
-				setState(110);
+				setState(102);
+				expression(0);
+				setState(103);
 				_la = _input.LA(1);
 				if ( !(_la==IN || _la==INSIDE) ) {
 				_errHandler.recoverInline(this);
 				} else {
 					consume();
 				}
-				setState(111);
-				expresion(0);
-				setState(119);
+				setState(104);
+				expression(0);
+				setState(112);
 				_la = _input.LA(1);
 				if (_la==COLON) {
 					{
-					setState(112);
+					setState(105);
 					match(COLON);
-					setState(113);
+					setState(106);
 					match(T__0);
-					setState(114);
+					setState(107);
 					match(LPAREN);
-					setState(115);
+					setState(108);
 					match(ID);
-					setState(116);
+					setState(109);
 					match(COMMA);
-					setState(117);
+					setState(110);
 					_la = _input.LA(1);
 					if ( !(_la==T__1 || _la==T__2) ) {
 					_errHandler.recoverInline(this);
 					} else {
 						consume();
 					}
-					setState(118);
+					setState(111);
 					match(RPAREN);
 					}
 				}
 
-				setState(121);
+				setState(114);
 				match(RPAREN);
-				setState(122);
+				setState(115);
 				match(LBRACE);
-				setState(126);
+				setState(120);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << COPY) | (1L << MOVE) | (1L << DELETE))) != 0)) {
+				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINT) | (1L << IF) | (1L << COPY) | (1L << MOVE) | (1L << DELETE) | (1L << FOR))) != 0)) {
 					{
-					{
-					setState(123);
-					statement();
+					setState(118);
+					switch (_input.LA(1)) {
+					case PRINT:
+					case COPY:
+					case MOVE:
+					case DELETE:
+						{
+						setState(116);
+						statement();
+						}
+						break;
+					case IF:
+					case FOR:
+						{
+						setState(117);
+						control_flow();
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
 					}
 					}
-					setState(128);
+					setState(122);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(129);
+				setState(123);
 				match(RBRACE);
 				}
 				break;
@@ -645,102 +776,255 @@ public class Catalog2Parser extends Parser {
 		return _localctx;
 	}
 
-	public static class ExpresionContext extends ParserRuleContext {
-		public Token tf;
-		public Token op;
-		public List<ExpresionContext> expresion() {
-			return getRuleContexts(ExpresionContext.class);
+	public static class ExpressionContext extends ParserRuleContext {
+		public ExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
 		}
-		public ExpresionContext expresion(int i) {
-			return getRuleContext(ExpresionContext.class,i);
+		@Override public int getRuleIndex() { return RULE_expression; }
+	 
+		public ExpressionContext() { }
+		public void copyFrom(ExpressionContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class NegationContext extends ExpressionContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode EXCL() { return getToken(Catalog2Parser.EXCL, 0); }
-		public TerminalNode MINUS() { return getToken(Catalog2Parser.MINUS, 0); }
-		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
-		public TerminalNode NUMBER() { return getToken(Catalog2Parser.NUMBER, 0); }
-		public TerminalNode TRUE() { return getToken(Catalog2Parser.TRUE, 0); }
-		public TerminalNode FALSE() { return getToken(Catalog2Parser.FALSE, 0); }
-		public TerminalNode ID() { return getToken(Catalog2Parser.ID, 0); }
-		public TerminalNode STRING() { return getToken(Catalog2Parser.STRING, 0); }
-		public TerminalNode PERIOD() { return getToken(Catalog2Parser.PERIOD, 0); }
-		public TerminalNode MULT() { return getToken(Catalog2Parser.MULT, 0); }
-		public TerminalNode DIV() { return getToken(Catalog2Parser.DIV, 0); }
-		public TerminalNode MOD() { return getToken(Catalog2Parser.MOD, 0); }
+		public NegationContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitNegation(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PlusMinusContext extends ExpressionContext {
+		public Token VAR;
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
 		public TerminalNode PLUS() { return getToken(Catalog2Parser.PLUS, 0); }
-		public TerminalNode AND() { return getToken(Catalog2Parser.AND, 0); }
-		public TerminalNode OR() { return getToken(Catalog2Parser.OR, 0); }
+		public TerminalNode MINUS() { return getToken(Catalog2Parser.MINUS, 0); }
+		public PlusMinusContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitPlusMinus(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ComparisonContext extends ExpressionContext {
+		public Token VAR;
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
 		public TerminalNode EQUALS() { return getToken(Catalog2Parser.EQUALS, 0); }
 		public TerminalNode NOTEQ() { return getToken(Catalog2Parser.NOTEQ, 0); }
 		public TerminalNode GT() { return getToken(Catalog2Parser.GT, 0); }
 		public TerminalNode LT() { return getToken(Catalog2Parser.LT, 0); }
 		public TerminalNode GTE() { return getToken(Catalog2Parser.GTE, 0); }
 		public TerminalNode LTE() { return getToken(Catalog2Parser.LTE, 0); }
-		public ExpresionContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_expresion; }
+		public ComparisonContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitExpresion(this);
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitComparison(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultDivModContext extends ExpressionContext {
+		public Token VAR;
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode MULT() { return getToken(Catalog2Parser.MULT, 0); }
+		public TerminalNode DIV() { return getToken(Catalog2Parser.DIV, 0); }
+		public TerminalNode MOD() { return getToken(Catalog2Parser.MOD, 0); }
+		public MultDivModContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitMultDivMod(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringDotIdContext extends ExpressionContext {
+		public TerminalNode STRING() { return getToken(Catalog2Parser.STRING, 0); }
+		public TerminalNode PERIOD() { return getToken(Catalog2Parser.PERIOD, 0); }
+		public TerminalNode ID() { return getToken(Catalog2Parser.ID, 0); }
+		public StringDotIdContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitStringDotId(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ParenExpressionContext extends ExpressionContext {
+		public TerminalNode LPAREN() { return getToken(Catalog2Parser.LPAREN, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode RPAREN() { return getToken(Catalog2Parser.RPAREN, 0); }
+		public ParenExpressionContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitParenExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AndOperatorContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode AND() { return getToken(Catalog2Parser.AND, 0); }
+		public AndOperatorContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitAndOperator(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class OrOperatorContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode OR() { return getToken(Catalog2Parser.OR, 0); }
+		public OrOperatorContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitOrOperator(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringExpressionContext extends ExpressionContext {
+		public Token VAR;
+		public TerminalNode STRING() { return getToken(Catalog2Parser.STRING, 0); }
+		public StringExpressionContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitStringExpression(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class InsertNumberContext extends ExpressionContext {
+		public Token VAR;
+		public TerminalNode NUMBER() { return getToken(Catalog2Parser.NUMBER, 0); }
+		public InsertNumberContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitInsertNumber(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class TrueFalseContext extends ExpressionContext {
+		public Token VAR;
+		public TerminalNode TRUE() { return getToken(Catalog2Parser.TRUE, 0); }
+		public TerminalNode FALSE() { return getToken(Catalog2Parser.FALSE, 0); }
+		public TrueFalseContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitTrueFalse(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class InsertVariableContext extends ExpressionContext {
+		public TerminalNode ID() { return getToken(Catalog2Parser.ID, 0); }
+		public InsertVariableContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitInsertVariable(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IdDotWordContext extends ExpressionContext {
+		public TerminalNode ID() { return getToken(Catalog2Parser.ID, 0); }
+		public TerminalNode PERIOD() { return getToken(Catalog2Parser.PERIOD, 0); }
+		public TerminalNode WORD() { return getToken(Catalog2Parser.WORD, 0); }
+		public IdDotWordContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof Catalog2Visitor ) return ((Catalog2Visitor<? extends T>)visitor).visitIdDotWord(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ExpresionContext expresion() throws RecognitionException {
-		return expresion(0);
+	public final ExpressionContext expression() throws RecognitionException {
+		return expression(0);
 	}
 
-	private ExpresionContext expresion(int _p) throws RecognitionException {
+	private ExpressionContext expression(int _p) throws RecognitionException {
 		ParserRuleContext _parentctx = _ctx;
 		int _parentState = getState();
-		ExpresionContext _localctx = new ExpresionContext(_ctx, _parentState);
-		ExpresionContext _prevctx = _localctx;
+		ExpressionContext _localctx = new ExpressionContext(_ctx, _parentState);
+		ExpressionContext _prevctx = _localctx;
 		int _startState = 8;
-		enterRecursionRule(_localctx, 8, RULE_expresion, _p);
+		enterRecursionRule(_localctx, 8, RULE_expression, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(147);
-			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
+			setState(144);
+			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				{
-				setState(134);
-				_la = _input.LA(1);
-				if ( !(_la==MINUS || _la==EXCL) ) {
-				_errHandler.recoverInline(this);
-				} else {
-					consume();
+				_localctx = new NegationContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
+				{
+				setState(128);
+				match(EXCL);
 				}
-				setState(135);
-				expresion(11);
+				setState(129);
+				expression(12);
 				}
 				break;
 			case 2:
 				{
-				setState(136);
+				_localctx = new ParenExpressionContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(130);
 				match(LPAREN);
-				setState(137);
-				expresion(0);
-				setState(138);
+				setState(131);
+				expression(0);
+				setState(132);
 				match(RPAREN);
 				}
 				break;
 			case 3:
 				{
-				setState(140);
-				match(NUMBER);
+				_localctx = new InsertNumberContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(134);
+				((InsertNumberContext)_localctx).VAR = match(NUMBER);
 				}
 				break;
 			case 4:
 				{
-				setState(141);
-				((ExpresionContext)_localctx).tf = _input.LT(1);
+				_localctx = new TrueFalseContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(135);
+				((TrueFalseContext)_localctx).VAR = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==TRUE || _la==FALSE) ) {
-					((ExpresionContext)_localctx).tf = (Token)_errHandler.recoverInline(this);
+					((TrueFalseContext)_localctx).VAR = (Token)_errHandler.recoverInline(this);
 				} else {
 					consume();
 				}
@@ -748,122 +1032,144 @@ public class Catalog2Parser extends Parser {
 				break;
 			case 5:
 				{
-				setState(142);
+				_localctx = new InsertVariableContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(136);
 				match(ID);
 				}
 				break;
 			case 6:
 				{
-				setState(143);
+				_localctx = new StringDotIdContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(137);
 				match(STRING);
-				setState(144);
+				setState(138);
 				match(PERIOD);
-				setState(145);
+				setState(139);
 				match(ID);
 				}
 				break;
 			case 7:
 				{
-				setState(146);
-				match(STRING);
+				_localctx = new IdDotWordContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(140);
+				match(ID);
+				setState(141);
+				match(PERIOD);
+				setState(142);
+				match(WORD);
+				}
+				break;
+			case 8:
+				{
+				_localctx = new StringExpressionContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(143);
+				((StringExpressionContext)_localctx).VAR = match(STRING);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(166);
+			setState(163);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(164);
-					switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
+					setState(161);
+					switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExpresionContext(_parentctx, _parentState);
-						pushNewRecursionContext(_localctx, _startState, RULE_expresion);
-						setState(149);
-						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
-						setState(150);
-						((ExpresionContext)_localctx).op = _input.LT(1);
+						_localctx = new MultDivModContext(new ExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expression);
+						setState(146);
+						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
+						setState(147);
+						((MultDivModContext)_localctx).VAR = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MULT) | (1L << DIV) | (1L << MOD))) != 0)) ) {
-							((ExpresionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((MultDivModContext)_localctx).VAR = (Token)_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(151);
-						expresion(11);
+						setState(148);
+						expression(12);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new ExpresionContext(_parentctx, _parentState);
-						pushNewRecursionContext(_localctx, _startState, RULE_expresion);
-						setState(152);
-						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(153);
-						((ExpresionContext)_localctx).op = _input.LT(1);
+						_localctx = new PlusMinusContext(new ExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expression);
+						setState(149);
+						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
+						setState(150);
+						((PlusMinusContext)_localctx).VAR = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
-							((ExpresionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((PlusMinusContext)_localctx).VAR = (Token)_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(154);
-						expresion(10);
+						setState(151);
+						expression(11);
 						}
 						break;
 					case 3:
 						{
-						_localctx = new ExpresionContext(_parentctx, _parentState);
-						pushNewRecursionContext(_localctx, _startState, RULE_expresion);
-						setState(155);
-						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
-						setState(156);
+						_localctx = new AndOperatorContext(new ExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expression);
+						setState(152);
+						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
+						setState(153);
 						match(AND);
-						setState(157);
-						expresion(9);
+						setState(154);
+						expression(10);
 						}
 						break;
 					case 4:
 						{
-						_localctx = new ExpresionContext(_parentctx, _parentState);
-						pushNewRecursionContext(_localctx, _startState, RULE_expresion);
-						setState(158);
-						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(159);
+						_localctx = new OrOperatorContext(new ExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expression);
+						setState(155);
+						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
+						setState(156);
 						match(OR);
-						setState(160);
-						expresion(8);
+						setState(157);
+						expression(9);
 						}
 						break;
 					case 5:
 						{
-						_localctx = new ExpresionContext(_parentctx, _parentState);
-						pushNewRecursionContext(_localctx, _startState, RULE_expresion);
-						setState(161);
-						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(162);
-						((ExpresionContext)_localctx).op = _input.LT(1);
+						_localctx = new ComparisonContext(new ExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expression);
+						setState(158);
+						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						setState(159);
+						((ComparisonContext)_localctx).VAR = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQUALS) | (1L << NOTEQ) | (1L << GT) | (1L << LT) | (1L << GTE) | (1L << LTE))) != 0)) ) {
-							((ExpresionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((ComparisonContext)_localctx).VAR = (Token)_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(163);
-						expresion(7);
+						setState(160);
+						expression(8);
 						}
 						break;
 					}
 					} 
 				}
-				setState(168);
+				setState(165);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
 			}
 			}
 		}
@@ -881,79 +1187,78 @@ public class Catalog2Parser extends Parser {
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
 		case 4:
-			return expresion_sempred((ExpresionContext)_localctx, predIndex);
+			return expression_sempred((ExpressionContext)_localctx, predIndex);
 		}
 		return true;
 	}
-	private boolean expresion_sempred(ExpresionContext _localctx, int predIndex) {
+	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 10);
+			return precpred(_ctx, 11);
 		case 1:
-			return precpred(_ctx, 9);
+			return precpred(_ctx, 10);
 		case 2:
-			return precpred(_ctx, 8);
+			return precpred(_ctx, 9);
 		case 3:
-			return precpred(_ctx, 7);
+			return precpred(_ctx, 8);
 		case 4:
-			return precpred(_ctx, 6);
+			return precpred(_ctx, 7);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3/\u00ac\4\2\t\2\4"+
-		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\7\2\20\n\2\f\2\16\2\23\13\2"+
-		"\3\2\7\2\26\n\2\f\2\16\2\31\13\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\5\2!"+
-		"\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3;\n\3\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\7\5H\n\5\f\5\16\5K\13\5\3\5\3\5\3\5\3\5\7\5Q\n\5\f\5\16"+
-		"\5T\13\5\3\5\7\5W\n\5\f\5\16\5Z\13\5\3\5\3\5\3\5\3\5\3\5\3\5\7\5b\n\5"+
-		"\f\5\16\5e\13\5\3\5\3\5\7\5i\n\5\f\5\16\5l\13\5\3\5\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5z\n\5\3\5\3\5\3\5\7\5\177\n\5\f\5\16\5\u0082"+
-		"\13\5\3\5\3\5\5\5\u0086\n\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
-		"\6\3\6\3\6\3\6\5\6\u0096\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
-		"\6\3\6\3\6\3\6\3\6\7\6\u00a7\n\6\f\6\16\6\u00aa\13\6\3\6\2\3\n\7\2\4\6"+
-		"\b\n\2\t\3\2\'(\3\2\4\5\4\2\7\7\36\36\3\2\34\35\4\2\b\t\13\13\3\2\6\7"+
-		"\3\2\24\31\u00c1\2 \3\2\2\2\4:\3\2\2\2\6<\3\2\2\2\b\u0085\3\2\2\2\n\u0095"+
-		"\3\2\2\2\f\r\5\4\3\2\r\16\7\f\2\2\16\20\3\2\2\2\17\f\3\2\2\2\20\23\3\2"+
-		"\2\2\21\17\3\2\2\2\21\22\3\2\2\2\22!\3\2\2\2\23\21\3\2\2\2\24\26\5\6\4"+
-		"\2\25\24\3\2\2\2\26\31\3\2\2\2\27\25\3\2\2\2\27\30\3\2\2\2\30!\3\2\2\2"+
-		"\31\27\3\2\2\2\32\34\5\b\5\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2"+
-		"\35\36\3\2\2\2\36!\3\2\2\2\37\35\3\2\2\2 \21\3\2\2\2 \27\3\2\2\2 \35\3"+
-		"\2\2\2!\3\3\2\2\2\"#\7\37\2\2#$\7\r\2\2$%\5\n\6\2%&\7\16\2\2&;\3\2\2\2"+
-		"\'(\7!\2\2()\7\r\2\2)*\5\n\6\2*+\7\22\2\2+,\5\n\6\2,-\7\16\2\2-;\3\2\2"+
-		"\2./\7\"\2\2/\60\7\r\2\2\60\61\5\n\6\2\61\62\7\22\2\2\62\63\5\n\6\2\63"+
-		"\64\7\16\2\2\64;\3\2\2\2\65\66\7#\2\2\66\67\7\r\2\2\678\5\n\6\289\7\16"+
-		"\2\29;\3\2\2\2:\"\3\2\2\2:\'\3\2\2\2:.\3\2\2\2:\65\3\2\2\2;\5\3\2\2\2"+
-		"<=\7,\2\2=>\7\n\2\2>?\5\n\6\2?@\7\f\2\2@\7\3\2\2\2AB\7 \2\2BC\7\r\2\2"+
-		"CD\5\n\6\2DE\7\16\2\2EI\7\17\2\2FH\5\4\3\2GF\3\2\2\2HK\3\2\2\2IG\3\2\2"+
-		"\2IJ\3\2\2\2JL\3\2\2\2KI\3\2\2\2LX\7\20\2\2MN\7%\2\2NR\7\17\2\2OQ\5\4"+
-		"\3\2PO\3\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2SU\3\2\2\2TR\3\2\2\2UW\7\20"+
-		"\2\2VM\3\2\2\2WZ\3\2\2\2XV\3\2\2\2XY\3\2\2\2Yj\3\2\2\2ZX\3\2\2\2[\\\7"+
-		"&\2\2\\]\7\r\2\2]^\5\n\6\2^_\7\16\2\2_c\7\17\2\2`b\5\4\3\2a`\3\2\2\2b"+
-		"e\3\2\2\2ca\3\2\2\2cd\3\2\2\2df\3\2\2\2ec\3\2\2\2fg\7\20\2\2gi\3\2\2\2"+
-		"h[\3\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2\2\2k\u0086\3\2\2\2lj\3\2\2\2mn\7"+
-		"$\2\2no\7\r\2\2op\5\n\6\2pq\t\2\2\2qy\5\n\6\2rs\7\23\2\2st\7\3\2\2tu\7"+
-		"\r\2\2uv\7,\2\2vw\7\22\2\2wx\t\3\2\2xz\7\16\2\2yr\3\2\2\2yz\3\2\2\2z{"+
-		"\3\2\2\2{|\7\16\2\2|\u0080\7\17\2\2}\177\5\4\3\2~}\3\2\2\2\177\u0082\3"+
-		"\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0083\3\2\2\2\u0082\u0080"+
-		"\3\2\2\2\u0083\u0084\7\20\2\2\u0084\u0086\3\2\2\2\u0085A\3\2\2\2\u0085"+
-		"m\3\2\2\2\u0086\t\3\2\2\2\u0087\u0088\b\6\1\2\u0088\u0089\t\4\2\2\u0089"+
-		"\u0096\5\n\6\r\u008a\u008b\7\r\2\2\u008b\u008c\5\n\6\2\u008c\u008d\7\16"+
-		"\2\2\u008d\u0096\3\2\2\2\u008e\u0096\7+\2\2\u008f\u0096\t\5\2\2\u0090"+
-		"\u0096\7,\2\2\u0091\u0092\7-\2\2\u0092\u0093\7\21\2\2\u0093\u0096\7,\2"+
-		"\2\u0094\u0096\7-\2\2\u0095\u0087\3\2\2\2\u0095\u008a\3\2\2\2\u0095\u008e"+
-		"\3\2\2\2\u0095\u008f\3\2\2\2\u0095\u0090\3\2\2\2\u0095\u0091\3\2\2\2\u0095"+
-		"\u0094\3\2\2\2\u0096\u00a8\3\2\2\2\u0097\u0098\f\f\2\2\u0098\u0099\t\6"+
-		"\2\2\u0099\u00a7\5\n\6\r\u009a\u009b\f\13\2\2\u009b\u009c\t\7\2\2\u009c"+
-		"\u00a7\5\n\6\f\u009d\u009e\f\n\2\2\u009e\u009f\7\32\2\2\u009f\u00a7\5"+
-		"\n\6\13\u00a0\u00a1\f\t\2\2\u00a1\u00a2\7\33\2\2\u00a2\u00a7\5\n\6\n\u00a3"+
-		"\u00a4\f\b\2\2\u00a4\u00a5\t\b\2\2\u00a5\u00a7\5\n\6\t\u00a6\u0097\3\2"+
-		"\2\2\u00a6\u009a\3\2\2\2\u00a6\u009d\3\2\2\2\u00a6\u00a0\3\2\2\2\u00a6"+
-		"\u00a3\3\2\2\2\u00a7\u00aa\3\2\2\2\u00a8\u00a6\3\2\2\2\u00a8\u00a9\3\2"+
-		"\2\2\u00a9\13\3\2\2\2\u00aa\u00a8\3\2\2\2\22\21\27\35 :IRXcjy\u0080\u0085"+
-		"\u0095\u00a6\u00a8";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\60\u00a9\4\2\t\2"+
+		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\7\2\20\n\2\f\2\16\2\23\13"+
+		"\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\61\n\3\3\4\3\4\3\4\3"+
+		"\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\7\5?\n\5\f\5\16\5B\13\5\3\5\3\5\3\5"+
+		"\3\5\3\5\7\5I\n\5\f\5\16\5L\13\5\3\5\7\5O\n\5\f\5\16\5R\13\5\3\5\3\5\3"+
+		"\5\3\5\3\5\3\5\3\5\7\5[\n\5\f\5\16\5^\13\5\3\5\3\5\7\5b\n\5\f\5\16\5e"+
+		"\13\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5s\n\5\3\5\3\5"+
+		"\3\5\3\5\7\5y\n\5\f\5\16\5|\13\5\3\5\3\5\5\5\u0080\n\5\3\6\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6\u0093\n\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\7\6\u00a4\n\6"+
+		"\f\6\16\6\u00a7\13\6\3\6\2\3\n\7\2\4\6\b\n\2\b\3\2\'(\3\2\4\5\3\2\34\35"+
+		"\4\2\b\t\13\13\3\2\6\7\3\2\24\31\u00c1\2\21\3\2\2\2\4\60\3\2\2\2\6\62"+
+		"\3\2\2\2\b\177\3\2\2\2\n\u0092\3\2\2\2\f\20\5\4\3\2\r\20\5\6\4\2\16\20"+
+		"\5\b\5\2\17\f\3\2\2\2\17\r\3\2\2\2\17\16\3\2\2\2\20\23\3\2\2\2\21\17\3"+
+		"\2\2\2\21\22\3\2\2\2\22\3\3\2\2\2\23\21\3\2\2\2\24\25\7\37\2\2\25\26\7"+
+		"\r\2\2\26\27\5\n\6\2\27\30\7\16\2\2\30\31\7\f\2\2\31\61\3\2\2\2\32\33"+
+		"\7!\2\2\33\34\7\r\2\2\34\35\5\n\6\2\35\36\7\22\2\2\36\37\5\n\6\2\37 \7"+
+		"\16\2\2 !\7\f\2\2!\61\3\2\2\2\"#\7\"\2\2#$\7\r\2\2$%\5\n\6\2%&\7\22\2"+
+		"\2&\'\5\n\6\2\'(\7\16\2\2()\7\f\2\2)\61\3\2\2\2*+\7#\2\2+,\7\r\2\2,-\5"+
+		"\n\6\2-.\7\16\2\2./\7\f\2\2/\61\3\2\2\2\60\24\3\2\2\2\60\32\3\2\2\2\60"+
+		"\"\3\2\2\2\60*\3\2\2\2\61\5\3\2\2\2\62\63\7-\2\2\63\64\7\n\2\2\64\65\5"+
+		"\n\6\2\65\66\7\f\2\2\66\7\3\2\2\2\678\7 \2\289\7\r\2\29:\5\n\6\2:;\7\16"+
+		"\2\2;@\7\17\2\2<?\5\4\3\2=?\5\b\5\2><\3\2\2\2>=\3\2\2\2?B\3\2\2\2@>\3"+
+		"\2\2\2@A\3\2\2\2AC\3\2\2\2B@\3\2\2\2CP\7\20\2\2DE\7%\2\2EJ\7\17\2\2FI"+
+		"\5\4\3\2GI\5\b\5\2HF\3\2\2\2HG\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3\2\2\2K"+
+		"M\3\2\2\2LJ\3\2\2\2MO\7\20\2\2ND\3\2\2\2OR\3\2\2\2PN\3\2\2\2PQ\3\2\2\2"+
+		"Qc\3\2\2\2RP\3\2\2\2ST\7&\2\2TU\7\r\2\2UV\5\n\6\2VW\7\16\2\2W\\\7\17\2"+
+		"\2X[\5\4\3\2Y[\5\b\5\2ZX\3\2\2\2ZY\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3\2"+
+		"\2\2]_\3\2\2\2^\\\3\2\2\2_`\7\20\2\2`b\3\2\2\2aS\3\2\2\2be\3\2\2\2ca\3"+
+		"\2\2\2cd\3\2\2\2d\u0080\3\2\2\2ec\3\2\2\2fg\7$\2\2gh\7\r\2\2hi\5\n\6\2"+
+		"ij\t\2\2\2jr\5\n\6\2kl\7\23\2\2lm\7\3\2\2mn\7\r\2\2no\7-\2\2op\7\22\2"+
+		"\2pq\t\3\2\2qs\7\16\2\2rk\3\2\2\2rs\3\2\2\2st\3\2\2\2tu\7\16\2\2uz\7\17"+
+		"\2\2vy\5\4\3\2wy\5\b\5\2xv\3\2\2\2xw\3\2\2\2y|\3\2\2\2zx\3\2\2\2z{\3\2"+
+		"\2\2{}\3\2\2\2|z\3\2\2\2}~\7\20\2\2~\u0080\3\2\2\2\177\67\3\2\2\2\177"+
+		"f\3\2\2\2\u0080\t\3\2\2\2\u0081\u0082\b\6\1\2\u0082\u0083\7\36\2\2\u0083"+
+		"\u0093\5\n\6\16\u0084\u0085\7\r\2\2\u0085\u0086\5\n\6\2\u0086\u0087\7"+
+		"\16\2\2\u0087\u0093\3\2\2\2\u0088\u0093\7+\2\2\u0089\u0093\t\4\2\2\u008a"+
+		"\u0093\7-\2\2\u008b\u008c\7.\2\2\u008c\u008d\7\21\2\2\u008d\u0093\7-\2"+
+		"\2\u008e\u008f\7-\2\2\u008f\u0090\7\21\2\2\u0090\u0093\7,\2\2\u0091\u0093"+
+		"\7.\2\2\u0092\u0081\3\2\2\2\u0092\u0084\3\2\2\2\u0092\u0088\3\2\2\2\u0092"+
+		"\u0089\3\2\2\2\u0092\u008a\3\2\2\2\u0092\u008b\3\2\2\2\u0092\u008e\3\2"+
+		"\2\2\u0092\u0091\3\2\2\2\u0093\u00a5\3\2\2\2\u0094\u0095\f\r\2\2\u0095"+
+		"\u0096\t\5\2\2\u0096\u00a4\5\n\6\16\u0097\u0098\f\f\2\2\u0098\u0099\t"+
+		"\6\2\2\u0099\u00a4\5\n\6\r\u009a\u009b\f\13\2\2\u009b\u009c\7\32\2\2\u009c"+
+		"\u00a4\5\n\6\f\u009d\u009e\f\n\2\2\u009e\u009f\7\33\2\2\u009f\u00a4\5"+
+		"\n\6\13\u00a0\u00a1\f\t\2\2\u00a1\u00a2\t\7\2\2\u00a2\u00a4\5\n\6\n\u00a3"+
+		"\u0094\3\2\2\2\u00a3\u0097\3\2\2\2\u00a3\u009a\3\2\2\2\u00a3\u009d\3\2"+
+		"\2\2\u00a3\u00a0\3\2\2\2\u00a4\u00a7\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a5"+
+		"\u00a6\3\2\2\2\u00a6\13\3\2\2\2\u00a7\u00a5\3\2\2\2\24\17\21\60>@HJPZ"+
+		"\\crxz\177\u0092\u00a3\u00a5";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

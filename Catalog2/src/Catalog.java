@@ -8,6 +8,7 @@
 ***/
 
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,6 +24,8 @@ public class Catalog {
         Catalog2Lexer lexer = new Catalog2Lexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         Catalog2Parser parser = new Catalog2Parser(tokens);
-        parser.prog();                
+        ParseTree tree = parser.prog();  
+        Visitor visitor = new Visitor();
+        visitor.visit(tree);
     }
 }

@@ -4,3 +4,5 @@
 /Catalog2Lexer.tokens
 /Catalog2Listener.java
 /Catalog2Parser.java
+/Catalog2BaseVisitor.java
+/Catalog2Visitor.java
