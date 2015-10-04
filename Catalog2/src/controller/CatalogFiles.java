@@ -1,3 +1,4 @@
+package controller;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -57,7 +58,7 @@ public class CatalogFiles {
 	
 	public boolean copyFile(CatalogType fromPath, CatalogType toPath) {
 			
-	    File fromFile = getFile(fromPath.getStrValue());
+		File fromFile = getFile(fromPath.getStrValue());
 	    File toFile = getFile(toPath.getStrValue());
 	    
 	    // check if file to copy exists, if it's a file and if can be read

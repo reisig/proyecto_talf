@@ -142,7 +142,8 @@ stmt returns [CatalogType r] {
 		r = a.applyPattern(stmt(pattern.getNextSibling()).getStrValue()); } ) |
 	#(VAR {
 		if ( !(ctlTable.containsKey(#VAR.getText()))) {
-			System.err.println("unknown variable " + #VAR.getText()); }
+			System.err.println("unknown variable " + #VAR.getText()); 
+		}
 		r = (CatalogType)ctlTable.get(#VAR.getText());
 	} ) |
 	#(NUMBER { r = new CatalogType(#NUMBER.getText()); } ) |

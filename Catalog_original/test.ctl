@@ -1,9 +1,3 @@
-$i = 0;
-foreach $file inside "C:\\Users\\Luis\\Music\\Musica"{
-	if $file.Extension == "pdf"{
-		print $file.Name;
-		$i = $i+1;
-	};
+foreach $file in "C:\Users\Luis\workspace\Catalog3\grammar"{
+	print $file.Name;
 };
-print $i;
-

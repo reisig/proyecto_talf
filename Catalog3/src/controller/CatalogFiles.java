@@ -1,3 +1,5 @@
+package controller;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -8,7 +10,7 @@ public class CatalogFiles {
 	
 	public static boolean fileExistsReadableAndNotDir(String path) {
 		File file = getFile(path);
-		return file.exists() && file.canRead() && file.isFile();
+		return file.exists() && file.canRead() && !file.isDirectory();
 	}
 	
 	public static boolean dirExistsReadableAndNotFile(String path) {
@@ -17,13 +19,27 @@ public class CatalogFiles {
 	}
 	
 	public static File getFile(String path) {
-		return new File(path);
+		return new File (path);
 	}
 	
 	public static String getFileNameNoExtension(File file) {
 		int period = file.getName().lastIndexOf(".");
 		return period > 0 ? file.getName().substring(0, period) : file.getName();
 	}
+	
+	public static String getFullPath(File file) {
+	    	String absolutePath = file.getAbsolutePath();
+	    	return absolutePath.substring(0,absolutePath.lastIndexOf(File.separator));
+	}
+	
+	public static String getFullPathName(File file) {
+	    	return file.getAbsolutePath();
+	}
+	
+	public static String getFileName(File file) {
+	    return file.getName();
+	}
+
 
 	public static String getFileExtension(File file) {
 		int period = file.getName().lastIndexOf(".");
@@ -31,8 +47,8 @@ public class CatalogFiles {
 	}
 	
 	public static String getFileType(File file) {
-		return getFileExtension(file).equals("mp3") ? "Music" :
-			getFileExtension(file).equals("jpg") || getFileExtension(file).equals("jpeg") ? "Image" : "Unknown";
+		return getFileExtension(file).equalsIgnoreCase("mp3") ? "Music" :
+			getFileExtension(file).equalsIgnoreCase("jpg") || getFileExtension(file).equalsIgnoreCase("jpeg") ? "Image" : "Unknown";
 	}
 	
 	public static boolean isImage(File file) {
@@ -57,7 +73,7 @@ public class CatalogFiles {
 	
 	public boolean copyFile(CatalogType fromPath, CatalogType toPath) {
 			
-		File fromFile = getFile(fromPath.getStrValue());
+	    File fromFile = getFile(fromPath.getStrValue());
 	    File toFile = getFile(toPath.getStrValue());
 	    
 	    // check if file to copy exists, if it's a file and if can be read
@@ -173,6 +189,19 @@ public class CatalogFiles {
 	    return delFile.delete();
 
 	}
+	
+	public boolean createFolder (CatalogType name, CatalogType path){
+	    	boolean success = false;
+	    	File file = new File (path.getStrValue().concat("\\").concat(name.getStrValue()));
+	    	if(!file.exists()){
+	    	    if (!file.mkdir()) {
+			System.out.println("Failed to create directory!");
+	    	    }else{
+	    		success = true;
+	    	    }
+	    	}
+	    	return success;
+	}
 
 	public List<CatalogType> getFiles(CatalogType dirPath, String flag) {
 		if (dirExistsReadableAndNotFile(dirPath.getStrValue())) {
@@ -180,7 +209,8 @@ public class CatalogFiles {
 			File[] files = dirFile.listFiles();
 			ArrayList<CatalogType> result = new ArrayList<CatalogType>();
 			for (int i = 0; i < files.length; i++) {
-				result.add(new CatalogType(files[i]));
+			    	if(!files[i].isDirectory())
+			    	    result.add(new CatalogType(files[i]));
 				if (flag.equals("inside") && files[i].isDirectory()) { // go recursively through sub directories
 					result.addAll(getFiles(new CatalogType(files[i].getAbsolutePath()), "inside"));
 				}

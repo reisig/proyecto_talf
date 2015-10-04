@@ -28,8 +28,5 @@ public class Catalog {
         ParseTree tree = parser.file();  
         Visitor visitor = new Visitor();
         System.out.println(visitor.visit(tree));
-        
-        
-                
     }
 }

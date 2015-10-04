@@ -1,9 +1,13 @@
+package grammar;
 import java.util.Hashtable;
 import java.util.Set;
 
+import controller.CatalogTable;
+import controller.CatalogType;
+
 public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     
-    Hashtable<String, CatalogType> memory = new Hashtable<String, CatalogType>();
+    CatalogTable memory = new CatalogTable();
 
     public CatalogType visitPrintStatement(Catalog2Parser.PrintStatementContext ctx) {
 	Set<String> keys = memory.keySet();
@@ -32,11 +36,9 @@ public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     }
 
     public CatalogType visitAssign(Catalog2Parser.AssignContext ctx) {
-	String id = ctx.ID().getText();
-	CatalogType value = new CatalogType(ctx.expression().getText());	
-	memory.put(id, value);
-	
-	return null;
+	String id = ctx.ID().getText();	
+	CatalogType value = visit(ctx.expression());	
+	return memory.put(id, value);
     }
 
     public CatalogType visitIfCondition(Catalog2Parser.IfConditionContext ctx) {
@@ -45,17 +47,25 @@ public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     }
 
     public CatalogType visitForCycle(Catalog2Parser.ForCycleContext ctx) {
-	
+
 	return null;
     }
 
     public CatalogType visitNegation(Catalog2Parser.NegationContext ctx) {
-	
+	CatalogType ctl = visit(ctx.expression());
 	return null;
     }
 
     public CatalogType visitPlusMinus(Catalog2Parser.PlusMinusContext ctx) {
-	return null;
+		
+	CatalogType exp1 = memory.get(ctx.expression(0).getText());
+	CatalogType exp2 = memory.get(ctx.expression(1).getText());
+
+	
+	if(ctx.VAR.getType() == Catalog2Parser.PLUS)
+	    return exp1.add(exp2);
+    	else
+	    return exp1.subtract(exp2);
     }
 
     public CatalogType visitComparison(Catalog2Parser.ComparisonContext ctx) {
@@ -63,7 +73,14 @@ public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     }
 
     public CatalogType visitMultDivMod(Catalog2Parser.MultDivModContext ctx) {
-	return null;
+	
+	CatalogType exp1 = memory.get(ctx.expression(0).getText());
+	CatalogType exp2 = memory.get(ctx.expression(1).getText());
+
+	if(ctx.VAR.getType() == Catalog2Parser.MULT)
+	    return exp1.multiply(exp2);
+	else
+	    return exp1.divide(exp2);
     }
 
     public CatalogType visitStringDotId(Catalog2Parser.StringDotIdContext ctx) {
@@ -71,7 +88,7 @@ public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     }
 
     public CatalogType visitParenExpression(Catalog2Parser.ParenExpressionContext ctx) {
-	return null;
+	return visit(ctx.expression());
     }
 
     public CatalogType visitAndOperator(Catalog2Parser.AndOperatorContext ctx) {
@@ -87,7 +104,7 @@ public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     }
 
     public CatalogType visitInsertNumber(Catalog2Parser.InsertNumberContext ctx) {
-	return null;
+	return new CatalogType(ctx.getText());
     }
 
     public CatalogType visitTrueFalse(Catalog2Parser.TrueFalseContext ctx) {
@@ -95,7 +112,7 @@ public class Visitor extends Catalog2BaseVisitor<CatalogType>{
     }
 
     public CatalogType visitInsertVariable(Catalog2Parser.InsertVariableContext ctx) {
-	return null;
+	return new CatalogType(ctx.ID().getText());
     }
 
     public CatalogType visitIdDotWord(Catalog2Parser.IdDotWordContext ctx) {

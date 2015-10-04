@@ -1,3 +1,4 @@
+package controller;
 /***
  * Excerpted from "The Definitive ANTLR 4 Reference",
  * published by The Pragmatic Bookshelf.
@@ -9,6 +10,10 @@
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
+
+import grammar.Catalog2Lexer;
+import grammar.Catalog2Parser;
+import grammar.Visitor;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

@@ -1,8 +1,8 @@
-$ruta = "C:\\Users\\Luis\\Music\\Musica";
-print($ruta);
+$var1 = 5;
+$var2 = 6;
+$var3 = ($var1-$var2);
 
-$var = "hola";
-print($var);
+print($var3);
 
 foreach ($file inside $ruta){
 	if ($file.Extension == "pdf"){

@@ -1,3 +1,4 @@
+package controller;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,7 +7,8 @@ import java.util.Date;
 public class CatalogType implements Comparable {
 
 	private Object _value  = null;
-	
+	private String propertyName;
+	public static CatalogType VOID = new CatalogType(new Object());
 	// CONSTRUCTORS
 	
 	public CatalogType() { }
