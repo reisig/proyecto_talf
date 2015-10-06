@@ -3,12 +3,6 @@ package controller;
 import java.io.*;
 import java.util.*;
 
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.mp3.Mp3Parser;
-import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
 import com.mpatric.mp3agic.AbstractID3v2Tag;
