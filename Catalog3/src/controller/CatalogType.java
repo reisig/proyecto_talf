@@ -37,6 +37,15 @@ public class CatalogType implements Comparable {
 		}else _value = value; // otherwise, it is just a string
 	    }
 	}
+	
+	public CatalogType(String value) {
+	    if(value!=null){
+		File file = new File(value);
+		if(file.exists() && file.canRead() && !file.isHidden()){
+		    	_value = CatalogFiles.getFile(value); // change of plans, value is going to be a file			
+		}else _value = value; // otherwise, it is just a string
+	    }
+	}
 
 	public CatalogType(int value) {
 		_value = new Integer(value);

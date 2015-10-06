@@ -6,7 +6,7 @@ import java.util.List;
 import model.CatalogParser.AssignmentContext;
 import model.CatalogParser.AtomExprContext;
 import model.CatalogParser.CopyContext;
-import model.CatalogParser.CreateContext;
+import model.CatalogParser.CreateExprContext;
 import model.CatalogParser.DeleteContext;
 import model.CatalogParser.DotExprContext;
 import model.CatalogParser.Foreach_statContext;
@@ -253,15 +253,6 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 	files.deleteFile(path);
 	return CatalogType.VOID;
     }
-    
-    public CatalogType visitCreate(CreateContext ctx) {	
-	CatalogType name = visit(ctx.expr(0));
-	CatalogType path = visit(ctx.expr(1));
-	File f = new File (path+"\\"+name);
-	if(!f.exists())
-	    files.createFolder(name, path);	
-	return CatalogType.VOID;
-    }
 
 
     public CatalogType visitDotExpr(DotExprContext ctx) {
@@ -296,6 +287,17 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 	    System.err.println("Error: var "+id+" is already assigned");
 	}	
         return CatalogType.VOID;
+    }
+
+    public CatalogType visitCreateExpr(CreateExprContext ctx) {
+	CatalogType name = visit(ctx.expr(0));
+	CatalogType path = visit(ctx.expr(1));
+    	String dirName = name.getStrValue().replace("/", "_").replace(":", "_").replace(" ", "_");
+	File f = new File (path+"\\"+dirName);
+	if(!f.exists()){
+	    files.createFolder(new CatalogType(dirName), path);	
+	}
+	return new CatalogType(f.getAbsolutePath());
     }
 
 

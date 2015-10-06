@@ -19,7 +19,6 @@ stat
 	| copy
 	| move
 	| delete
-	| create
 	| OTHER {System.err.println("unknown char: " + $OTHER.text);}
 	;
 
@@ -54,10 +53,6 @@ move
 delete
 	:	DELETE expr SCOL
 	;
-	
-create
-	:	CREATE OPAR expr COMMA expr CPAR SCOL
-	;
  	
 condition_block
 	 : expr stat_block
@@ -70,17 +65,18 @@ stat_block
 
 
 expr
-	 :<assoc=right> expr POW expr           #powExpr
-	 | MINUS expr                           #unaryMinusExpr
-	 | NOT expr                             #notExpr
-	 | expr op=(MULT | DIV | MOD) expr      #multiplicationExpr
-	 | expr op=(PLUS | MINUS) expr          #additiveExpr
-	 | expr op=(LTE | GTE | LT | GT) expr 	#relationalExpr
-	 | expr op=(EQ | NEQ) expr              #equalityExpr
-	 | expr AND expr                        #andExpr
-	 | expr OR expr                         #orExpr
-	 | expr DOT expr						#dotExpr
-	 | atom                                 #atomExpr
+	 :<assoc=right> expr POW expr           	#powExpr
+	 | MINUS expr                           	#unaryMinusExpr
+	 | NOT expr                             	#notExpr
+	 | expr op=(MULT | DIV | MOD) expr      	#multiplicationExpr
+	 | expr op=(PLUS | MINUS) expr          	#additiveExpr
+	 | expr op=(LTE | GTE | LT | GT) expr 		#relationalExpr
+	 | expr op=(EQ | NEQ) expr              	#equalityExpr
+	 | expr AND expr                       	 	#andExpr
+	 | expr OR expr                         	#orExpr
+	 | expr DOT expr							#dotExpr
+	 | CREATE OPAR expr COMMA expr CPAR SCOL	#createExpr
+	 | atom                                 	#atomExpr
 	 ;
 
 atom

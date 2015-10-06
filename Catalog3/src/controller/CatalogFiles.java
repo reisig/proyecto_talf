@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -192,13 +193,15 @@ public class CatalogFiles {
 	
 	public boolean createFolder (CatalogType name, CatalogType path){
 	    	boolean success = false;
-	    	File file = new File (path.getStrValue().concat("\\").concat(name.getStrValue()));
+	    	String filePath = path.getStrValue().concat("\\").concat(name.getStrValue());
+	    	File file = new File (filePath);
 	    	if(!file.exists()){
-	    	    if (!file.mkdir()) {
+	    	    try {
+			Files.createDirectory(file.toPath());
+		    } catch (IOException e) {
 			System.err.println("Error al crear el directorio!");
-	    	    }else{
-	    		success = true;
-	    	    }
+			e.printStackTrace();
+		    }
 	    	}
 	    	return success;
 	}

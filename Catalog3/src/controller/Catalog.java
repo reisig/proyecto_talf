@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  
 public class Catalog {
     public static void main(String[] args) throws Exception {       
-        String inputFile = "testing\test.ctl";
+        String inputFile = "test.ctl";
         if ( args.length>0 )
             inputFile = args[0];
         InputStream is = System.in;

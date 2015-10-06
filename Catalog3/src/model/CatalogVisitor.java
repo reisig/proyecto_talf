@@ -77,12 +77,6 @@ public interface CatalogVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDelete(CatalogParser.DeleteContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CatalogParser#create}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCreate(CatalogParser.CreateContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link CatalogParser#condition_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -115,6 +109,13 @@ public interface CatalogVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUnaryMinusExpr(CatalogParser.UnaryMinusExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code createExpr}
+	 * labeled alternative in {@link CatalogParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateExpr(CatalogParser.CreateExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code multiplicationExpr}
 	 * labeled alternative in {@link CatalogParser#expr}.
