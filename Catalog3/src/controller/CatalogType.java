@@ -12,7 +12,6 @@ import java.util.Date;
 public class CatalogType implements Comparable {
 
 	private Object _value  = null;
-	private String propertyName;
 	public static CatalogType VOID = new CatalogType(new Object());
 	
 	// CONSTRUCTORS
@@ -23,14 +22,19 @@ public class CatalogType implements Comparable {
 		_value = value;
 	}
 
-	public CatalogType(String value) {
+	public CatalogType(String value, Boolean dir) {
 	    if(value!=null){
-	    	Path path = Paths.get(value);
-		if (Files.exists(path, LinkOption.NOFOLLOW_LINKS)) { // if string is a valid path,
-			_value = CatalogFiles.getFile(value); // change of plans, value is going to be a file
-		}else{
-			_value = value; // otherwise, it is just a string
-		}
+		File file = new File(value);
+		if(file.exists() && file.canRead() && !file.isHidden()){
+		    if(dir){
+			if(file.isDirectory())
+			    _value = CatalogFiles.getFile(value); // change of plans, value is going to be a file
+		    }else{
+			if(file.isFile())
+			    _value = CatalogFiles.getFile(value); // change of plans, value is going to be a file
+		    }
+			
+		}else _value = value; // otherwise, it is just a string
 	    }
 	}
 

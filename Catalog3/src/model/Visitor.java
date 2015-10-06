@@ -257,7 +257,9 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
     public CatalogType visitCreate(CreateContext ctx) {	
 	CatalogType name = visit(ctx.expr(0));
 	CatalogType path = visit(ctx.expr(1));
-	files.createFolder(name, path);	
+	File f = new File (path+"\\"+name);
+	if(!f.exists())
+	    files.createFolder(name, path);	
 	return CatalogType.VOID;
     }
 
@@ -267,9 +269,8 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 	CatalogType ct = visit(ctx.expr(0));
 	String metadata = ct.getProperty(dot).getStrValue();
 	if (metadata.equals("0")){
-	    metadata = "Other";
+	    metadata = "No Metadata";
 	}
-	System.out.println(metadata);
 	return new CatalogType(metadata);
     }
 
@@ -277,6 +278,7 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 	String id = ctx.expr(0).getText();
 	if(!memory.containsKey(id)){
 	    CatalogType dir = visit(ctx.expr(1));
+	    dir = new CatalogType(dir.getStrValue(), true);
 	    String flag = null;
 	    if (dir.isFile()){
 		flag = ctx.op.getText(); 
@@ -285,6 +287,7 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 		    memory.put(id, ct);
 		    visit(ctx.stat_block());
 		    dir = visit(ctx.expr(1));
+		    dir = new CatalogType(dir.getStrValue(), true);
 		}
 	    }else{
 		System.err.println("expression must be a valid directory");

@@ -195,7 +195,7 @@ public class CatalogFiles {
 	    	File file = new File (path.getStrValue().concat("\\").concat(name.getStrValue()));
 	    	if(!file.exists()){
 	    	    if (!file.mkdir()) {
-			System.out.println("Failed to create directory!");
+			System.err.println("Error al crear el directorio!");
 	    	    }else{
 	    		success = true;
 	    	    }

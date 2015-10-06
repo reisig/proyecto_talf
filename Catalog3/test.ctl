@@ -1,6 +1,5 @@
-ruta = "C:\Users\Luis\Music\test\";
-
-foreach (file in ruta){
-	genre = file.Genre;
-	create(genre, ruta);
+music = "C:\Users\Luis\Music\test";
+foreach (file in music){
+	name = file.Genre;
+	print(name);
 }

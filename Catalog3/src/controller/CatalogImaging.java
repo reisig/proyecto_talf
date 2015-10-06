@@ -4,59 +4,71 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.drew.metadata.*;
-import com.drew.imaging.jpeg.*;
-import com.drew.metadata.exif.*;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.jpeg.JpegParser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.SAXException;
 
 public class CatalogImaging {
 	
 	public static String getCameraMake(File file) {
-		Directory exifDirectory = getMetaDirectory(file);
-		return exifDirectory != null ? exifDirectory.getString(ExifDirectory.TAG_MAKE) : "no camera make info";
+		Metadata metadata = getMetaDirectory(file);
+		String make = metadata.get("File Modified Date");
+		String names[] = metadata.names();
+		for (String string : names) {
+		    System.out.println(string);
+		}
+		return make == null ?  "No camera make info" : make;
 	}
 	
 	public static String getCameraModel(File file) {
-		Directory exifDirectory = getMetaDirectory(file);
-		return exifDirectory != null ? exifDirectory.getString(ExifDirectory.TAG_MODEL) : "no camera model info";
+		Metadata metadata = getMetaDirectory(file);
+		String cameraModel = metadata.get("");
+		return cameraModel == null ?  "No camera model info" : cameraModel;
 	}
 	
 	public static String getDateTaken(File file) {
-		Directory exifDirectory = getMetaDirectory(file);
-		try {
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss"); // original format
-			if (exifDirectory != null) {
-				String dateStr = exifDirectory.getString(ExifDirectory.TAG_DATETIME_ORIGINAL);
-				Date date = formatter.parse(dateStr);
-				formatter =  new SimpleDateFormat("MM/dd/yyyy"); // desired format
-				return formatter.format(date);
-			}
-			return "no date picture taken info";
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return "error occurred while getting the date";
+	    Metadata metadata = getMetaDirectory(file);
+	    String dateTaken = metadata.get("");
+	    return dateTaken == null ?  "No date taken info" : dateTaken;
 	}
 	
 	public static String getWidth(File file) {
-		Directory exifDirectory = getMetaDirectory(file);
-		return exifDirectory != null ? exifDirectory.getString(ExifDirectory.TAG_EXIF_IMAGE_WIDTH) : "no width info";
+	    Metadata metadata = getMetaDirectory(file);
+	    String width = metadata.get("Image Width");
+	    return width == null ?  "No width info" : width;
 	}
 	
 	public static String getHeight(File file) {
-		Directory exifDirectory = getMetaDirectory(file);
-		return exifDirectory != null ? exifDirectory.getString(ExifDirectory.TAG_EXIF_IMAGE_HEIGHT) : "no width info";
+	    Metadata metadata = getMetaDirectory(file);
+	    String height = metadata.get("Image Height");
+	    return height == null ?  "No height info" : height;
 	}
 	
-	private static Directory getMetaDirectory(File file) {
-		try {
-			Metadata metadata = JpegMetadataReader.readMetadata(file);
-			return metadata.getDirectory(ExifDirectory.class);
-		}
-		catch (JpegProcessingException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static Metadata getMetaDirectory(File file ){
+	    //detecting the file type
+	      BodyContentHandler handler = new BodyContentHandler();
+	      Metadata metadata = new Metadata();
+	      FileInputStream inputstream = null;
+    	      try {
+    		inputstream = new FileInputStream(file);
+    	      } catch (FileNotFoundException e1) {
+    		e1.printStackTrace();
+    	      }
+    	      ParseContext pcontext = new ParseContext();
+	      
+	      //Jpeg Parse
+	      JpegParser  jpgParser = new JpegParser();
+	      
+	      try {
+		jpgParser.parse(inputstream, handler, metadata,pcontext);
+	      } catch (IOException | SAXException | TikaException e) {
+		e.printStackTrace();
+	      }
+	      return metadata;
 	}
+	
 	
 }

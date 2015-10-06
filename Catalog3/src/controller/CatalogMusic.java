@@ -3,90 +3,119 @@ package controller;
 import java.io.*;
 import java.util.*;
 
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.audio.mp3.MP3File;
-import org.jaudiotagger.tag.TagException;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.mp3.Mp3Parser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.SAXException;
+
+import com.mpatric.mp3agic.AbstractID3v2Tag;
+import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 public class CatalogMusic {
     
     	HashMap<String,String> tags=new HashMap<String,String>();
 
 	public static String getArtist(File file) {
-	    MP3File mp3file = getMP3File(file);
-		    if (mp3file.hasID3v1Tag()) {		    
-			return mp3file.getID3v1Tag().getFirstArtist();
-		    }else if (mp3file.hasID3v2Tag()){
-			return mp3file.getID3v2Tag().getFirst("Artist");
-		    }
-		return "no Artist info";
-
+	    
+	    Mp3File mp3 = getMP3File(file);
+	    if ( mp3.hasId3v2Tag() ){
+		ID3v2 tag = mp3.getId3v2Tag();
+		return tag.getArtist();
+	    }else if (mp3.hasId3v1Tag()){
+		ID3v1 tag = mp3.getId3v1Tag();
+		return tag.getArtist();
+	    }	    
+	    return "No Artist info";
 	}
 	
 	public static String getAlbum(File file) {
-	    MP3File mp3file = getMP3File(file);
-		    if (mp3file.hasID3v1Tag()) {		    
-			    return mp3file.getID3v1Tag().getFirstAlbum();
-			}else if (mp3file.hasID3v2Tag()){
-			    return mp3file.getID3v2Tag().getFirst("Album");
-			}
+	    Mp3File mp3 = getMP3File(file);
+		   
+	    if ( mp3.hasId3v2Tag() ){
+		ID3v2 tag = mp3.getId3v2Tag();
+		return tag.getAlbum();
+	    }else if (mp3.hasId3v1Tag()){
+		ID3v1 tag = mp3.getId3v1Tag();
+		return tag.getAlbum();
+	    }
+	    return "No Album info";	
 
-		
-		return "no Album info";
 	}
 	
 	public static String getTitle(File file) {
-	    MP3File mp3file = getMP3File(file);
-		    if (mp3file.hasID3v1Tag()) {
-		    	   return mp3file.getID3v1Tag().getFirstTitle(); 
-		    	}else if(mp3file.hasID3v2Tag()){
-		    	    return mp3file.getID3v2Tag().getFirst("Title");
-		    	}  		    	
-		return "no Title info";
+	    Mp3File mp3 = getMP3File(file);
+		   
+	    if ( mp3.hasId3v2Tag() ){
+		ID3v2 tag = mp3.getId3v2Tag();
+		return tag.getTitle();
+	    }else if (mp3.hasId3v1Tag()){
+		ID3v1 tag = mp3.getId3v1Tag();
+		return tag.getTitle();
+	    }	
+	    
+	    return "No Title info";
 	}
 	
 	public static String getGenre(File file) {
-	    MP3File mp3file = getMP3File(file);
-		    if (mp3file.hasID3v1Tag()) {
-		        return mp3file.getID3v1Tag().getFirstGenre(); 
-		    }else if(mp3file.hasID3v2Tag()){
-			return mp3file.getID3v2Tag().getFirst("Genre");
-		    }	    	
-		return  "no Genre info";
+	    Mp3File mp3 = getMP3File(file);
+	    if (mp3.hasId3v2Tag()){
+		ID3v2 tag = mp3.getId3v2Tag();
+		return tag.getGenreDescription();
+	    }else if (mp3.hasId3v1Tag()){
+		ID3v1 tag = mp3.getId3v1Tag();
+		return tag.getGenreDescription();
+	    }		    
+	    return "No Genre info";
 	}
 	
 	public static String getYear(File file) {
-	    	MP3File mp3file = getMP3File(file);
-		    	if (mp3file.hasID3v1Tag()) {
-		    	    return mp3file.getID3v1Tag().getFirstYear(); 
-			}else if(mp3file.hasID3v2Tag()){
-			    return mp3file.getID3v2Tag().getFirst("Year");
-			}
-	
-		return "no Year info";
+	    Mp3File mp3 = getMP3File(file);
+		   
+	    if ( mp3.hasId3v2Tag() ){
+		ID3v2 tag = mp3.getId3v2Tag();
+		return tag.getYear();
+	    }else if (mp3.hasId3v1Tag()){
+		ID3v1 tag = mp3.getId3v1Tag();
+		return tag.getYear();
+	    }
+	    
+	    return "No Year info";
 	}
 	
 	public static String getTrack(File file) {
-	    	MP3File mp3file = getMP3File(file);
-	    	if (mp3file.hasID3v1Tag()) {
-	    	    return mp3file.getID3v1Tag().getFirstTrack(); 
-		}else if(mp3file.hasID3v2Tag()){
-		    return mp3file.getID3v2Tag().getFirst("Track");
-		}
-		return "no Track info";
+	    Mp3File mp3 = getMP3File(file);
+		   
+	    if ( mp3.hasId3v2Tag() ){
+		ID3v2 tag = mp3.getId3v2Tag();
+		return tag.getTrack();
+	    }else if (mp3.hasId3v1Tag()){
+		ID3v1 tag = mp3.getId3v1Tag();
+		return tag.getTrack();
+	    }
+	    
+	    return "No Track info";
 	}
 	
-	public static MP3File getMP3File(File file) {
-		try {
-			return (MP3File)AudioFileIO.read(file);
-		} catch (CannotReadException | IOException | TagException
-			| ReadOnlyFileException | InvalidAudioFrameException e) {
-		    e.printStackTrace();
-		}
-		return null;
-	}
+	
+	public static Mp3File getMP3File(File file){
+	    Mp3File mp3 = null;
+	    try {
+		 mp3 = new Mp3File (file);
+	    } catch (UnsupportedTagException 
+		    | InvalidDataException
+		    | IOException e) {
+		e.printStackTrace();
+	    }
+	    
+	    return mp3;
+	 }
 	
 	private static HashMap<String, String> _genreMap;
 	
