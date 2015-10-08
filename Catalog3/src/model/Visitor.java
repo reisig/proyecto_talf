@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import model.CatalogParser.AssignmentContext;
-import model.CatalogParser.AtomExprContext;
 import model.CatalogParser.CopyContext;
 import model.CatalogParser.CreateExprContext;
 import model.CatalogParser.DeleteContext;

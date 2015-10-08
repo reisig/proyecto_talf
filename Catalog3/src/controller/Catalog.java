@@ -1,21 +1,16 @@
 package controller;
 
 
-import model.CatalogLexer;
-import model.CatalogParser;
-
-import org.antlr.v4.gui.TreeViewer;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
-
-import model.Visitor;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import model.CatalogLexer;
+import model.CatalogParser;
+import model.Visitor;
+
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
  
 public class Catalog {
     public static void main(String[] args) throws Exception {       

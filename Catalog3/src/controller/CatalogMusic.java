@@ -1,11 +1,9 @@
 package controller;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
-import org.xml.sax.SAXException;
-
-import com.mpatric.mp3agic.AbstractID3v2Tag;
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
