@@ -1,7 +1,10 @@
-music = "C:\Users\Luis\Music\test";
+musica = "C:\Users\Luis\Music\Musica";
+i = 0;
 
-foreach (file in music){
-	name = file.Genre;
-	path = create(name, music);
-	move (file, path);
+foreach(file inside musica){
+	ext = file.Extension;
+	if(ext == "mp3"){
+		i = i+1;
+	}
 }
+print ("dentro de la carpeta "+musica+" hay "+i+" archivos mp3");

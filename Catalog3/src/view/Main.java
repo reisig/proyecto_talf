@@ -2,30 +2,37 @@ package view;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JSplitPane;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-
-import javax.swing.JTextArea;
-
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 
-import javax.swing.JMenuBar;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.CatalogLexer;
 import model.CatalogParser;
@@ -35,11 +42,9 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.awt.Color;
-import java.io.PrintStream;
-
 public class Main extends JFrame {
 
+    private static final long serialVersionUID = -490702507079911903L;
     private JPanel contentPane;
     private JPanel panel;
     private JTextArea txtEntrada;
@@ -47,7 +52,6 @@ public class Main extends JFrame {
     private JMenu mnFile;
     private JMenuItem mntmOpen;
     private JMenuItem mntmSave;
-    private JMenuItem mntmSaveAs;
     private JMenuItem mntmClose;
     private JMenuItem mntmNew;
     private JMenu mnRun;
@@ -57,15 +61,17 @@ public class Main extends JFrame {
     private JScrollPane scrollPane;
     private JScrollPane scrollPane_2;
     private JPanel panel_1;
-    private JTextArea textArea;
+    private JTextArea txtSalida;
+    private JMenu mnOpciones;
+    private JMenuItem mntmBorrarConsola;
+    private JMenuItem mntmGuardarComo;
+    private static File actualFile = null;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
+		    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		    Main frame = new Main();
 		    frame.setVisible(true);
 		} catch (Exception e) {
@@ -75,10 +81,9 @@ public class Main extends JFrame {
 	});
     }
 
-    /**
-     * Create the frame.
-     */
     public Main() {
+    	setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/img/multimedia-5.png")));
+    	setTitle("CATALOG2");
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setBounds(100, 100, 800, 600);
 	setJMenuBar(getMenuBar_1());
@@ -114,6 +119,7 @@ public class Main extends JFrame {
 	public JTextArea getTxtEntrada() {
 		if (txtEntrada == null) {
 			txtEntrada = new JTextArea();
+			txtEntrada.setLineWrap(true);
 			txtEntrada.setFont(new Font("Consolas", Font.PLAIN, 13));
 		}
 		return txtEntrada;
@@ -123,6 +129,7 @@ public class Main extends JFrame {
 			menuBar = new JMenuBar();
 			menuBar.add(getMnFile());
 			menuBar.add(getMnRun());
+			menuBar.add(getMnOpciones());
 			menuBar.add(getMenu_1());
 		}
 		return menuBar;
@@ -133,7 +140,7 @@ public class Main extends JFrame {
 			mnFile.add(getMntmNew());
 			mnFile.add(getMntmOpen());
 			mnFile.add(getMntmSave());
-			mnFile.add(getMntmSaveAs());
+			mnFile.add(getMntmGuardarComo());
 			mnFile.add(getMntmClose());
 		}
 		return mnFile;
@@ -141,30 +148,67 @@ public class Main extends JFrame {
 	public JMenuItem getMntmOpen() {
 		if (mntmOpen == null) {
 			mntmOpen = new JMenuItem("Abrir");
+			mntmOpen.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				    guardarCambios(e);
+				    JFileChooser fileChooser = new JFileChooser();
+				    FileNameExtensionFilter filter = new FileNameExtensionFilter("CATALOG Files", "ctl", ".ctl");
+				    fileChooser.setFileFilter(filter);
+				    fileChooser.setAcceptAllFileFilterUsed(false);
+				    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				    int result = fileChooser.showOpenDialog(Main.this);
+				    if (result == JFileChooser.APPROVE_OPTION) {
+				        File selectedFile = fileChooser.getSelectedFile();
+				        BufferedReader buffReader = null;
+				        try {
+				            FileReader fileReader = new FileReader(selectedFile);
+				            buffReader = new BufferedReader(fileReader);
+				            txtEntrada.read(buffReader, null);
+				            buffReader.close();
+				          }  catch (Exception e1) {
+				            e1.printStackTrace();
+				          } 
+				    }
+				    
+				}
+			});
+			mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		}
 		return mntmOpen;
 	}
 	public JMenuItem getMntmSave() {
 		if (mntmSave == null) {
 			mntmSave = new JMenuItem("Guardar");
+			mntmSave.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				    guardarArchivo(e);
+				}
+			});
+			mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		}
 		return mntmSave;
-	}
-	public JMenuItem getMntmSaveAs() {
-		if (mntmSaveAs == null) {
-			mntmSaveAs = new JMenuItem("Guardar Como");
-		}
-		return mntmSaveAs;
 	}
 	public JMenuItem getMntmClose() {
 		if (mntmClose == null) {
 			mntmClose = new JMenuItem("Cerrar");
+			mntmClose.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				    guardarCambios(e);
+				    dispose();
+				}
+			});
 		}
 		return mntmClose;
 	}
 	public JMenuItem getMntmNew() {
 		if (mntmNew == null) {
 			mntmNew = new JMenuItem("Nuevo");
+			mntmNew.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				    guardarCambios(e);				    
+				}
+			});
+			mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		}
 		return mntmNew;
 	}
@@ -178,10 +222,10 @@ public class Main extends JFrame {
 	public JMenuItem getMntmEjecutarCodigo() {
 		if (mntmEjecutarCodigo == null) {
 			mntmEjecutarCodigo = new JMenuItem("Ejecutar codigo");
+			mntmEjecutarCodigo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
 			mntmEjecutarCodigo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 				    if(!txtEntrada.getText().isEmpty()){
-					
 					    //Se le agrega una linea extra para una ejecucion correcta (requerimientos de la gramatica)
 					    if(!txtEntrada.getText().endsWith("\n"))
 					    	txtEntrada.append("\n");
@@ -219,6 +263,11 @@ public class Main extends JFrame {
 	public JMenuItem getMntmAcercaDe() {
 		if (mntmAcercaDe == null) {
 			mntmAcercaDe = new JMenuItem("Acerca de");
+			mntmAcercaDe.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				    
+				}
+			});
 		}
 		return mntmAcercaDe;
 	}
@@ -240,21 +289,104 @@ public class Main extends JFrame {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
 			panel_1.setLayout(new BorderLayout(0, 0));
-			panel_1.add(getTextArea(), BorderLayout.CENTER);
+			panel_1.add(getTxtSalida(), BorderLayout.CENTER);
 		}
 		return panel_1;
 	}
-	public JTextArea getTextArea() {
-		if (textArea == null) {
-		    textArea = new JTextArea();
-		    textArea.setEditable(false);
-		    textArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-		    textArea.setForeground(Color.WHITE);
-		    textArea.setBackground(Color.BLACK);
-			PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+	public JTextArea getTxtSalida() {
+		if (txtSalida == null) {
+		    txtSalida = new JTextArea();
+		    txtSalida.setLineWrap(true);
+		    txtSalida.setEditable(false);
+		    txtSalida.setFont(new Font("Consolas", Font.PLAIN, 13));
+		    txtSalida.setForeground(Color.WHITE);
+		    txtSalida.setBackground(Color.BLACK);
+			PrintStream printStream = new PrintStream(new CustomOutputStream(txtSalida));
 			System.setOut(printStream);
 			System.setErr(printStream);
 		}
-		return textArea;
+		return txtSalida;
+	}
+	public JMenu getMnOpciones() {
+		if (mnOpciones == null) {
+			mnOpciones = new JMenu("Opciones");
+			mnOpciones.add(getMntmBorrarConsola());
+		}
+		return mnOpciones;
+	}
+	public JMenuItem getMntmBorrarConsola() {
+		if (mntmBorrarConsola == null) {
+			mntmBorrarConsola = new JMenuItem("Borrar consola");
+			mntmBorrarConsola.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+				    txtSalida.setText("");
+				}
+			});
+			mntmBorrarConsola.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
+		}
+		return mntmBorrarConsola;
+	}
+	public JMenuItem getMntmGuardarComo() {
+		if (mntmGuardarComo == null) {
+			mntmGuardarComo = new JMenuItem("Guardar Como");
+			mntmGuardarComo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0));
+			mntmGuardarComo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				    guardarArchivo(e);
+				}
+			});
+		}
+		return mntmGuardarComo;
+	}
+	
+	private void guardarCambios(ActionEvent e){
+	    if(actualFile != null || !txtEntrada.getText().trim().isEmpty()){
+		int dialogResult = JOptionPane.showConfirmDialog(null, "¿Desea guardar los cambios?", "Aviso", JOptionPane.YES_NO_OPTION);
+	    	if(dialogResult == JOptionPane.YES_OPTION){
+	    	    guardarArchivo(e);
+	    	}
+	    	actualFile = null;
+	    	txtEntrada.setText("");	    
+	    }
+	}
+	
+	private void guardarComo(File f){
+	    int dialogResult = JOptionPane.showConfirmDialog(null, "¿Desea sobreescribir el archivo "+f.getName()+"?", "Aviso", JOptionPane.YES_NO_OPTION);
+	    if(dialogResult == JOptionPane.YES_OPTION){
+		sobreEscribir(f);
+	    }
+	}
+	
+	private void guardarArchivo(ActionEvent e){
+	    if(actualFile != null && e.getSource()==mntmSave)
+		sobreEscribir(actualFile);
+	    else{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int retrival = fileChooser.showSaveDialog(Main.this);
+		if (retrival == JFileChooser.APPROVE_OPTION) {
+		    File selected = fileChooser.getSelectedFile();	
+		    if (!selected.getName().endsWith(".ctl"))
+			selected = new File (selected.getAbsolutePath().concat(".ctl"));
+		    if(selected.exists() && selected.canWrite()){
+			guardarComo(selected);
+		    }else{
+			sobreEscribir(selected);
+		    }
+            	}
+    	    }
+	}
+	
+	private void sobreEscribir(File f){
+	    if(actualFile == null)
+		actualFile = f;
+	    FileWriter fw = null;
+	    try {
+		fw = new FileWriter(f);
+		fw.write(txtEntrada.getText());
+		fw.close();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
 }

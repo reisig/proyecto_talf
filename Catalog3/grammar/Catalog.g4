@@ -75,7 +75,7 @@ expr
 	 | expr AND expr                       	 	#andExpr
 	 | expr OR expr                         	#orExpr
 	 | expr DOT expr							#dotExpr
-	 | CREATE OPAR expr COMMA expr CPAR SCOL	#createExpr
+	 | CREATE OPAR expr COMMA expr CPAR 		#createExpr
 	 | atom                                 	#atomExpr
 	 ;
 
@@ -156,7 +156,7 @@ STRING
  ;
 
 COMMENT
- : '#' ~[\r\n]* -> skip
+ : '//' ~[\r\n]* -> skip
  ;
 
 SPACE

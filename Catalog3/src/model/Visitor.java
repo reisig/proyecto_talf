@@ -64,9 +64,9 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 	String id = ctx.getText();
 	CatalogType value = memory.get(id);
         if(value == null) {
-            throw new RuntimeException("no such variable: " + id);
+            throw new RuntimeException("No existe la variable: " + id);
         }
-        return value;
+        return value == null ? CatalogType.VOID : value;
     }
     
     @Override
@@ -123,7 +123,7 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
             case CatalogParser.MOD:
                 return new CatalogType(left.getDoubleValue() % right.getDoubleValue());
             default:
-                throw new RuntimeException("unknown operator: " + CatalogParser.tokenNames[ctx.op.getType()]);
+                throw new RuntimeException("Operador desconocido: " + CatalogParser.tokenNames[ctx.op.getType()]);
         }
     }
 
@@ -142,7 +142,7 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
             case CatalogParser.MINUS:
                 return new CatalogType(left.getDoubleValue() - right.getDoubleValue());
             default:
-                throw new RuntimeException("unknown operator: " + CatalogParser.tokenNames[ctx.op.getType()]);
+                throw new RuntimeException("Operador desconocido: " + CatalogParser.tokenNames[ctx.op.getType()]);
         }
     }
 
@@ -162,7 +162,7 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
             case CatalogParser.GTE:
                 return new CatalogType(left.getDoubleValue() >= right.getDoubleValue());
             default:
-                throw new RuntimeException("unknown operator: " + CatalogParser.tokenNames[ctx.op.getType()]);
+                throw new RuntimeException("Operador desconocido: " + CatalogParser.tokenNames[ctx.op.getType()]);
         }
     }
 
@@ -182,7 +182,7 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
                         new CatalogType(Math.abs(left.getDoubleValue() - right.getDoubleValue()) >= SMALL_VALUE) :
                         new CatalogType(left.notEquals(right));
             default:
-                throw new RuntimeException("unknown operator: " + CatalogParser.tokenNames[ctx.op.getType()]);
+                throw new RuntimeException("Operador desconocido: " + CatalogParser.tokenNames[ctx.op.getType()]);
         }
     }
 
@@ -230,8 +230,10 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 
     public CatalogType visitPrint(PrintContext ctx) {
 	CatalogType value = visit(ctx.expr());
-	System.out.println(value);
-	return value;
+	if(value != null){
+		System.out.println(value);
+	}
+	return value == null ? CatalogType.VOID : value;
     }
 
     public CatalogType visitCopy(CopyContext ctx) {
@@ -281,10 +283,10 @@ public class Visitor extends CatalogBaseVisitor<CatalogType>{
 		    dir = new CatalogType(dir.getStrValue(), true);
 		}
 	    }else{
-		System.err.println("expression must be a valid directory");
+		throw new RuntimeException("La expresion en foreach debe ser un directorio valido.");
 	    }	    
 	}else{
-	    System.err.println("Error: var "+id+" is already assigned");
+	    throw new RuntimeException("La variable "+id+" ya se encuentra asignada.");
 	}	
         return CatalogType.VOID;
     }

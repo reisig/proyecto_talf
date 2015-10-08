@@ -174,9 +174,9 @@ public class CatalogType implements Comparable {
     			else if (propertyName.equals("Track")) {
     				return new CatalogType(CatalogFiles.isMusic(file) ? CatalogMusic.getTrack(file) : "not a music file");
     			}
-    			return new CatalogType("unknown property");
+    			return new CatalogType("Propiedad desconocida");
 		}
-		else { return new CatalogType("not a file"); }
+		else { return new CatalogType("No es un archivo"); }
 	}
 	
 	public CatalogType applyPattern(String pattern) {

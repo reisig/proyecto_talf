@@ -2,6 +2,10 @@ package controller;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -79,7 +83,7 @@ public class CatalogFiles {
 	    
 	    // check if file to copy exists, if it's a file and if can be read
 	    if (!fileExistsReadableAndNotDir(fromPath.getStrValue())) {
-	    	System.err.println(fromPath + " does not exists or not readable or a directory.");
+	    	System.err.println(fromPath + " no existe, o no se pudo leer, o no es un directorio.");
 	    	return false;
 	    }
 	    
@@ -91,10 +95,10 @@ public class CatalogFiles {
 	    if (toFile.exists()) {
 		    
 	    	if (!toFile.canWrite()) {
-		    	System.err.println("cannot write to destination file " + toPath);
+		    	System.err.println("No se pudo escribir al archivo destino: " + toPath);
 		    	return false;
 		    }
-		    System.out.print("overwrite existing file " + toFile.getName() + "? (Y/N): ");
+		    System.out.print("¿Sobreescribir archivo " + toFile.getName() + "? (Y/N): ");
 		    System.out.flush();
 		    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		    String response = "";
@@ -106,7 +110,7 @@ public class CatalogFiles {
 			}
 			
 			if (!response.toUpperCase().equals("Y")) {
-				System.out.println("existing file will not be overwritten.");
+				System.out.println("El archivo existente no sera sobreescrito.");
 				return false;
 	    	}
 	    	else {
@@ -116,48 +120,59 @@ public class CatalogFiles {
 	    		}
 	    		File dir = new File(parent);
 	    		if (!dir.exists()) {
-	    			System.err.println("destination directory does not exist " + parent);
+	    			System.err.println("El directorio destino no existe: " + parent);
 	    			return false;
 	    		}
 	    		if (dir.isFile()) {
-	    			System.err.println("destination is not a directory " + parent);
+	    			System.err.println("El destino no es un directorio: " + parent);
 	    			return false;
 	    		}
 	    		if (!dir.canWrite()) {
-	    			System.err.println("cannot write to destination directory " + parent);
+	    			System.err.println("No se pudo escribir al directorio destino: " + parent);
 	    			return false;
 	    		}
 	    	}
 		}
 	    
 	    // actual copying of the file
-	    FileInputStream from = null;
-	    FileOutputStream to = null;
+	    Path from = Paths.get(fromFile.getAbsolutePath());
+	    Path to   = Paths.get(toFile.getAbsolutePath());
+	    
 	    try {
-	      from = new FileInputStream(fromFile);
-	      to = new FileOutputStream(toFile);
-	      byte[] buffer = new byte[4096];
-	      int bytesRead;
-	      while ((bytesRead = from.read(buffer)) != -1) {
-	        to.write(buffer, 0, bytesRead); // write
-	      }
+		//replace existing file using java nio package
+		System.out.println("Copying: "+from+" To: "+to);
+		Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+	    } catch (IOException e) {
+		e.printStackTrace();
 	    }
-	    catch (FileNotFoundException e) { e.printStackTrace(); return false;	}
-	    catch (IOException e) { e.printStackTrace(); return false; }
-	    finally {
-	    	if (from != null) {
-	    		try {
-	    			from.close();
-	    		}
-	    		catch (IOException e) { e.printStackTrace(); return false; }
-	    	}
-	    	if (to != null) {
-		        try {
-		          to.close();
-		        }
-		    	catch (IOException e) { e.printStackTrace(); return false; }
-	    	}
-	    }
+	   
+//	    FileInputStream from = null;
+//	    FileOutputStream to = null;
+//	    try {
+//	      from = new FileInputStream(fromFile);
+//	      to = new FileOutputStream(toFile);
+//	      byte[] buffer = new byte[4096];
+//	      int bytesRead;
+//	      while ((bytesRead = from.read(buffer)) != -1) {
+//	        to.write(buffer, 0, bytesRead); // write
+//	      }
+//	    }
+//	    catch (FileNotFoundException e) { e.printStackTrace(); return false;	}
+//	    catch (IOException e) { e.printStackTrace(); return false; }
+//	    finally {
+//	    	if (from != null) {
+//	    		try {
+//	    			from.close();
+//	    		}
+//	    		catch (IOException e) { e.printStackTrace(); return false; }
+//	    	}
+//	    	if (to != null) {
+//		        try {
+//		          to.close();
+//		        }
+//		    	catch (IOException e) { e.printStackTrace(); return false; }
+//	    	}
+//	    }
 	    return true;
 	    
 	}
@@ -168,13 +183,13 @@ public class CatalogFiles {
 	    
 	    // make sure the file or directory exists
 	    if (!delFile.exists()) {
-	    	System.err.println(delPath + " does not exist");
+	    	System.err.println("El directorio: "+delPath + " no existe");
 	    	return false;
 	    }
 	
 	    // make sure we have permissions to write to a file
     	if (!delFile.canWrite()) {
-	    	System.err.println("cannot write to destination file " + delPath);
+	    	System.err.println("No se puede escribir al archivo destino: " + delPath);
 	    	return false;
 	    }
 	
@@ -182,7 +197,7 @@ public class CatalogFiles {
 	    if (delFile.isDirectory()) {
 	    	String[] files = delFile.list();
 	    	if (files.length > 0) {
-	    		System.err.println("directory is not empty " + delPath);
+	    		System.err.println("El directorio no esta vacio: " + delPath);
 	    		return false;
 	    	}
 	    }
@@ -197,6 +212,7 @@ public class CatalogFiles {
 	    	File file = new File (filePath);
 	    	if(!file.exists()){
 	    	    try {
+	    		System.out.println("Creating: "+file.toPath());
 			Files.createDirectory(file.toPath());
 		    } catch (IOException e) {
 			System.err.println("Error al crear el directorio!");
